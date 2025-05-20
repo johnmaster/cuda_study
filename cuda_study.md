@@ -139,3 +139,4 @@ c++自定义函数和CUDA核函数的定义（实现）
 * 非默认的CUDA流是在主机端产生和销毁的，一个CUDA流由类型`cudaStream_t`表示
   * `cudaError_t cudaStreamCreate(cudaStream_t*)`
   * `cudaError_t cudaStreamDestroy(cudaStream_t);`
+
