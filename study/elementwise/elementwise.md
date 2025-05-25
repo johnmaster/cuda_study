@@ -52,9 +52,9 @@ half2主要用于对两个半精度浮点数`__half`打包在一起，然后一�
 
 
 # 编译选项
-`__CUDA_NO_HALF_OPERATORS__`：默认情况下，CUDA不会启用`half`类型的加减乘除操作符，使用这个选项是为了取消默认的禁止定义，允许使用这些操作符；
-`__CUDA_NO_HALF_CONVERSIONS__`：允许`half`和`float/int`类型之间的转换；
-`__CUDA_NO_HALF2_OPERATORS__`：允许`half2`的SIMD运算符；
-`--expt-relaxed-constexpr`：允许`constexpr`表达式中使用等多的CUDA特性，某些 constexpr（编译期常量表达式）在 CUDA 中被限制。这个选项放宽限制，让你在 constexpr 语境中使用例如 `__host__ __device__` 函数;
-`--expt-extended-lambda`：允许cuda kernel中使用lambda表达式；
+* `__CUDA_NO_HALF_OPERATORS__`：默认情况下，CUDA不会启用`half`类型的加减乘除操作符，使用这个选项是为了取消默认的禁止定义，允许使用这些操作符；
+* `__CUDA_NO_HALF_CONVERSIONS__`：允许`half`和`float/int`类型之间的转换；
+* `__CUDA_NO_HALF2_OPERATORS__`：允许`half2`的SIMD运算符；
+* `--expt-relaxed-constexpr`：允许`constexpr`表达式中使用等多的CUDA特性，某些 constexpr（编译期常量表达式）在 CUDA 中被限制。这个选项放宽限制，让你在 constexpr 语境中使用例如 `__host__ __device__` 函数;
+* `--expt-extended-lambda`：允许cuda kernel中使用lambda表达式；
 

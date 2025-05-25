@@ -43,6 +43,12 @@ def run_benchmark(perf_func: callable, a: torch.Tensor, b: torch.Tensor, tag: st
     total_time = (end - start) * 1000
     mean_time = total_time / iters
     out_info = f"out_{tag}"
+    # .flatten()展平成一维张量
+    # .detach() 从计算图中分离张量
+    # .cpu()将张量从gpu转移到cpu中
+    # .numpy()将pytorch张量转换为numpy数组
+    # .tolist()将numpy数组转换为纯python列表
+    # [:2]从列表中取出前两个元素
     out_val = out.flatten().detach().cpu().numpy().tolist()[:2]
     out_val = [round(v, 8) for v in out_val]
     print(f"{out_info:>18}: {out_val}, time:{mean_time:.8f}ms")
@@ -56,6 +62,10 @@ SKs = [(S, K) for S in Ss for K in Ks]
 for (S, K) in SKs:
     print("-" * 85)
     print(" " * 40 + f"S={S}, K={K}")
+    # torch.randn((S, K)) 生成形状为(S, K)的随机张量
+    # .cuda() 将张量从cpu移动到gpu上
+    # .float() 将张量的数据类型转换为32位浮点数
+    # .contiguous() 保持张量的内存布局是连续的
     a = torch.randn((S, K)).cuda().float().contiguous()
     b = torch.randn((S, K)).cuda().float().contiguous()
     c = torch.zeros_like(a).cuda().float().contiguous()
@@ -64,6 +74,7 @@ for (S, K) in SKs:
     run_benchmark(partial(torch.add, out=c), a, b, "f32_th")
 
     print("-" * 85)
+    # .half()将张量的数据类型转换为float16
     a_f16 = a.half().contiguous()
     b_f16 = b.half().contiguous()
     c_f16 = c.half().contiguous()
