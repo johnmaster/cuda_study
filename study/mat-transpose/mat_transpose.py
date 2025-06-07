@@ -10,13 +10,14 @@ torch.set_grad_enabled(False)
 
 # 尝试从系统的环境变量中读取CUTLASS_REPO_PATH的值
 # 如果环境变量不存在,默认使用~/cutlass
-CUTLASS_REPO_PATH = os.environ.get(
-    "CUTLASS_REPO_PATH", os.path.expanduser("~/cutlass")
-)
+#CUTLASS_REPO_PATH = os.environ.get(
+#    "CUTLASS_REPO_PATH", os.path.expanduser("~/cutlass")
+#)
 # Load the CUDA kernel as a python module
 lib = load(
     name="mat_transpose_lib",
-    sources=["mat_transpose.cu", "mat_transpose_cute.cu"],
+    # sources=["mat_transpose.cu", "mat_transpose_cute.cu"],
+    sources = ["mat_transpose.cu"],
     extra_cuda_cflags=[
         "-O3",
         "-U__CUDA_NO_HALF_OPERATORS__",
@@ -28,7 +29,7 @@ lib = load(
         "--use_fast_math",
     ],
     extra_cflags=["-std=c++17"],
-    extra_include_paths=[os.path.join(CUTLASS_REPO_PATH, "include")],
+    #extra_include_paths=[os.path.join(CUTLASS_REPO_PATH, "include")],
 )
 
 def run_benchmark(
@@ -132,6 +133,7 @@ for M, N in MNs:
         "f32x4_shared_bcf_row2col(2d)",
         y,
     )
+    '''
     run_benchmark(
         lib.mat_transpose_cute_col2row_reg,
         x,
@@ -191,5 +193,6 @@ for M, N in MNs:
     )
     run_benchmark(partial(transpose_copy_compiled, out=y), x, "f32_th_compiled")
     print("-" * 130)
+    '''
 
 
