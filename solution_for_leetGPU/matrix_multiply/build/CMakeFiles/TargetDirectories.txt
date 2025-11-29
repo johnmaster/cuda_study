@@ -1,0 +1,3 @@
+/home/lingbok/cuda_practice/matrix_multiply/build/CMakeFiles/bench.dir
+/home/lingbok/cuda_practice/matrix_multiply/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_practice/matrix_multiply/build/CMakeFiles/rebuild_cache.dir
