@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/bench.dir/main.cpp.o CMakeFiles/bench.dir/kernels.cu.o -o bench   -L/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs  -L/usr/local/cuda-12.4/targets/x86_64-linux/lib  -lcublas -lcudadevrt -lcudart_static -lrt -lpthread -ldl
