@@ -1,0 +1,3 @@
+/home/lingbok/cuda_practice/reduction/build/CMakeFiles/bench.dir
+/home/lingbok/cuda_practice/reduction/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_practice/reduction/build/CMakeFiles/rebuild_cache.dir
