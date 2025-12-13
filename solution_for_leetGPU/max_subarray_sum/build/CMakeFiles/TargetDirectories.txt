@@ -1,0 +1,3 @@
+/home/lingbok/cuda_practice/max_subarray_sum/build/CMakeFiles/max_subarray_sum.dir
+/home/lingbok/cuda_practice/max_subarray_sum/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_practice/max_subarray_sum/build/CMakeFiles/rebuild_cache.dir
