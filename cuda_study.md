@@ -143,3 +143,54 @@ c++自定义函数和CUDA核函数的定义（实现）
   * `cudaError_t cudaStreamCreate(cudaStream_t*)`
   * `cudaError_t cudaStreamDestroy(cudaStream_t);`
 
+## Shuffle操作（线程束内通信）
+
+* Shuffle操作允许线程束内的线程直接交换寄存器中的数据，无需通过共享内存，比使用共享内存更加高效
+* CUDA提供四种shuffle函数（CUDA 9.0+都需要带`_sync`后缀）：
+
+### 1. `__shfl_sync(mask, var, srcLane, width)`
+* 从指定的lane（线程束内线程编号0-31）直接读取数据
+* 示例：`int val = __shfl_sync(0xffffffff, myVal, 0);` // 所有线程都从lane 0读取数据
+
+### 2. `__shfl_up_sync(mask, var, delta, width)`
+* 每个线程从比自己编号小delta的线程读取数据
+* 如果源lane不存在（编号<0），则返回调用线程自己的值
+* 示例：`int val = __shfl_up_sync(0xffffffff, myVal, 2);` // 从前面第2个线程读取
+
+### 3. `__shfl_down_sync(mask, var, delta, width)`
+* 每个线程从比自己编号大delta的线程读取数据
+* 如果源lane不存在（编号≥width），则返回调用线程自己的值
+* 常用于归约操作
+* 示例：`int val = __shfl_down_sync(0xffffffff, myVal, 2);` // 从后面第2个线程读取
+
+### 4. `__shfl_xor_sync(mask, var, laneMask, width)`
+* 每个线程从自己的lane编号与laneMask进行异或运算得到的lane读取数据
+* 常用于蝶形交换（butterfly exchange）
+* 示例：`int val = __shfl_xor_sync(0xffffffff, myVal, 1);` // lane 0和1交换，2和3交换...
+
+### Shuffle参数说明
+| 参数 | 说明 |
+|------|------|
+| mask | 32位掩码，指定参与操作的线程，`0xffffffff`表示所有32个线程都参与 |
+| var | 要交换的变量值 |
+| srcLane/delta/laneMask | 确定数据来源的参数 |
+| width | 可选参数，逻辑线程束宽度（必须是2的幂且≤32），默认32 |
+
+### 使用Shuffle实现高效归约求和
+```cpp
+__device__ int warpReduce(int val) {
+    for (int offset = 16; offset > 0; offset /= 2) {
+        val += __shfl_down_sync(0xffffffff, val, offset);
+    }
+    return val;  // lane 0 包含最终结果
+}
+```
+
+### Shuffle操作的优势
+* 低延迟：直接在寄存器级别交换数据
+* 无需共享内存：节省共享内存资源
+* 无需额外同步：`_sync`版本内置同步
+* 更高带宽：比共享内存访问更快
+
+* 4种shuffle操作
+
