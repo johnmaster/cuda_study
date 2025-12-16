@@ -1,0 +1,1 @@
+/usr/bin/g++ @CMakeFiles/multi_head_attention.dir/objects1.rsp -o multi_head_attention @CMakeFiles/multi_head_attention.dir/linkLibs.rsp -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib"
