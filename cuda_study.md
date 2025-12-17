@@ -194,3 +194,19 @@ __device__ int warpReduce(int val) {
 
 * 4种shuffle操作
 
+# 按速度划分
+* Register: 线程独享
+* shared memory: block内线程共享
+* L1 cache: 每个SM共享，自动缓存
+* L2 cache: 所有SM共享
+* global memory: 所有线程共享
+
+[!H100-Streaming-Multiprocessor-SM-625x869.png](images/H100-Streaming-Multiprocessor-SM-625x869.png)
+
+* LD/ST unit: 加载/存储单元
+* SFU: 执行复杂数学函数
+* Tensor Core: 执行矩阵乘法的硬件单元
+* warp scheduler
+  * 监控warp状态，哪些就绪，哪些等待
+  * 选择并发射指令，挑选就绪的warp执行
+  * 隐藏内存延迟，当一个warp等待时，切换到另一个
