@@ -201,7 +201,7 @@ __device__ int warpReduce(int val) {
 * L2 cache: 所有SM共享
 * global memory: 所有线程共享
 
-[!H100-Streaming-Multiprocessor-SM-625x869.png](images/H100-Streaming-Multiprocessor-SM-625x869.png)
+![H100-Streaming-Multiprocessor-SM-625x869.png](images/H100-Streaming-Multiprocessor-SM-625x869.png)
 
 * LD/ST unit: 加载/存储单元
 * SFU: 执行复杂数学函数
