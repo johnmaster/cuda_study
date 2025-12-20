@@ -1,4 +1,4 @@
-![![images/gpu-cpu-system-diagram.png](images/images/gpu-cpu-system-diagram.png)
+![images/gpu-cpu-system-diagram.png](images/images/gpu-cpu-system-diagram.png)
 
 * GPU计算不是指单独的GPU计算，而是指CPU+GPU的异构计算，GPU必须在CPU的调度下才能完成特定任务。
 * 起控制作用的CPU称为主机（host），起加速作用的GPU称为设备（device）。
