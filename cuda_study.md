@@ -1,3 +1,5 @@
+![![images/gpu-cpu-system-diagram.png](images/images/gpu-cpu-system-diagram.png)
+
 * GPU计算不是指单独的GPU计算，而是指CPU+GPU的异构计算，GPU必须在CPU的调度下才能完成特定任务。
 * 起控制作用的CPU称为主机（host），起加速作用的GPU称为设备（device）。
 * 主机对设备的调用是通过核函数（kernel function）来实现，
@@ -180,7 +182,7 @@ c++自定义函数和CUDA核函数的定义（实现）
 ```cpp
 __device__ int warpReduce(int val) {
     for (int offset = 16; offset > 0; offset /= 2) {
-        val += __shfl_down_sync(0xffffffff, val, offset);
+        val += __shfl_down_sync(0xffffffff, vall, offset);
     }
     return val;  // lane 0 包含最终结果
 }
@@ -210,3 +212,122 @@ __device__ int warpReduce(int val) {
   * 监控warp状态，哪些就绪，哪些等待
   * 选择并发射指令，挑选就绪的warp执行
   * 隐藏内存延迟，当一个warp等待时，切换到另一个
+
+# shared memory 分配机制
+* 每个SM有一个固定大小的shared memory池；当多个block thread被调度到同一个SM时，shared memory池会被分区，每个block获得自己独立的一块shared memory。
+
+
+
+| 内存类型 | 位置 | 作用域 | 生命周期 | 速度 | 容量 | 声明方式 | 典型用途 |
+|---------|------|--------|---------|------|------|----------|---------|
+| **Register** | SM片内 | 线程私有 | 线程 | 最快(~1 cycle) | 64KB/SM | 自动变量 | 循环变量、临时计算 |
+| **Shared Memory** | SM片内 | Block内共享 | Block | 很快(~28 cycles) | 48-192KB/SM | `__shared__` | Tile数据、线程协作 |
+| **Local Memory** | 片外(Global) | 线程私有 | 线程 | 慢(~400 cycles) | 无限制 | 大数组/spill | ⚠️尽量避免 |
+| **Constant Memory** | 片外(Global) | Grid只读 | 应用程序 | 快(缓存命中) | 64KB | `__constant__` | 卷积核、常量参数 |
+| **Global Memory** | 片外(HBM) | 所有线程读写 | cudaFree前 | 最慢(~800 cycles) | GB级 | `cudaMalloc` | 主要数据存储 |
+
+## 面试常考点
+
+### Q1: Register vs Local Memory
+**关键区别：**
+- Register在SM片内，极快；Local Memory虽然叫"local"但实际在片外Global Memory中，很慢
+- 使用太多寄存器或定义大数组会导致**寄存器溢出(register spilling)**，被迫使用Local Memory
+- 可通过`nvcc --ptxas-options=-v`查看寄存器使用情况
+
+```cuda
+// ❌ 会用Local Memory（太大）
+__global__ void bad() {
+    float arr[1000];  // 寄存器放不下 -> Local Memory
+}
+
+// ✅ 使用Shared Memory
+__global__ void good() {
+    __shared__ float arr[1000];  // 片内，快
+}
+```
+
+### Q2: Shared Memory的优势和注意事项
+**优势：**
+- 比Global Memory快10-20倍
+- Block内线程可共享数据，减少重复读取Global Memory
+- 可编程控制的缓存
+
+**注意事项：**
+1. **必须同步**：使用`__syncthreads()`避免race condition
+2. **Bank Conflict**：32个bank，相邻4字节映射到不同bank
+3. **容量限制**：影响occupancy（每个SM能同时运行的block数）
+
+```cuda
+__shared__ float data[32];
+
+// ❌ 32-way bank conflict（同一warp的32个线程访问同一个bank的不同地址）
+data[threadIdx.x * 32] = 0;
+
+// ✅ 无bank conflict（相邻线程访问相邻地址 -> 不同bank）
+data[threadIdx.x] = 0;
+```
+
+### Q3: Constant Memory的使用场景
+**最佳场景：warp内所有线程读取相同地址（广播机制）**
+```cuda
+__constant__ float kernel_3x3[9];  // 卷积核
+
+__global__ void conv() {
+    // ✅ 所有线程读相同值 -> 1次内存访问，广播给32个线程
+    float w0 = kernel_3x3[0];
+    
+    // ❌ 每个线程读不同值 -> 串行化，32次内存访问
+    float val = kernel_3x3[threadIdx.x];  // 慢！
+}
+```
+
+**限制：**
+- 总容量仅64KB
+- 只读（kernel中不能修改）
+- 使用`cudaMemcpyToSymbol()`从host传输数据
+
+### Q4: Global Memory访问优化
+**关键：Coalesced Access（合并访问）**
+
+```cuda
+// ✅ 合并访问：warp内32个线程访问连续的32个float
+__global__ void coalesced(float* data) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    float val = data[idx];  // thread0读data[0], thread1读data[1]...
+    // 32个线程的访问合并成1-2次内存事务
+}
+
+// ❌ 非合并访问：跨步访问
+__global__ void strided(float* data) {
+    int idx = threadIdx.x * 32;
+    float val = data[idx];  // thread0读data[0], thread1读data[32]...
+    // 需要32次内存事务！慢32倍
+}
+```
+
+### Q5: L1/L2 Cache与Shared Memory的关系
+**关键点：**
+- **L1 Cache和Shared Memory共享同一块物理SRAM**（现代架构如Ampere）
+  - Volta: 128KB统一L1/Shared，可配置比例
+  - Ampere A100: 192KB统一L1/Shared
+- **L2 Cache是独立的**：所有SM共享，缓存Global Memory数据
+  - A100: 40MB L2
+  - 程序员无法直接控制，硬件自动管理
+
+```
+内存层次（从快到慢）：
+Register (最快) 
+    ↓ 
+Shared Memory / L1 Cache (物理上同一块SRAM)
+    ↓
+L2 Cache (所有SM共享，缓存Global Memory)
+    ↓
+Global Memory (HBM/GDDR，实际数据存储位置)
+```
+
+### Q6: 如何选择合适的内存类型？
+1. **单个变量** → Register（编译器自动）
+2. **需要Block内线程共享** → Shared Memory
+3. **小量只读数据，所有线程读相同值** → Constant Memory
+4. **大量数据** → Global Memory（注意合并访问）
+5. **避免使用** → Local Memory（会自动产生，尽量避免）
