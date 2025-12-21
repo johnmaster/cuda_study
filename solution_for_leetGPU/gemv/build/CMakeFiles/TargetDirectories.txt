@@ -1,0 +1,3 @@
+/home/lingbok/cuda_study/solution_for_leetGPU/gemv/build/CMakeFiles/gemv.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/gemv/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/gemv/build/CMakeFiles/rebuild_cache.dir
