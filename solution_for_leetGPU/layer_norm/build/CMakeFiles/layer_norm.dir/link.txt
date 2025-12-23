@@ -1,0 +1,1 @@
+/usr/bin/g++ @CMakeFiles/layer_norm.dir/objects1.rsp -o layer_norm @CMakeFiles/layer_norm.dir/linkLibs.rsp -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib"
