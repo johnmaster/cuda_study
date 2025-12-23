@@ -1,0 +1,3 @@
+/home/lingbok/cuda_study/solution_for_leetGPU/layer_norm/build/CMakeFiles/layer_norm.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/layer_norm/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/layer_norm/build/CMakeFiles/rebuild_cache.dir
