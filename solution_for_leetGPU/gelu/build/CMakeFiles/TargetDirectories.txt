@@ -1,0 +1,3 @@
+/home/lingbok/cuda_study/solution_for_leetGPU/gelu/build/CMakeFiles/gelu.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/gelu/build/CMakeFiles/edit_cache.dir
+/home/lingbok/cuda_study/solution_for_leetGPU/gelu/build/CMakeFiles/rebuild_cache.dir
