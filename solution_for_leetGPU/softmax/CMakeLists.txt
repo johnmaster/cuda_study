@@ -16,3 +16,14 @@ add_executable(
 target_compile_options(softmax PRIVATE
     $<$<COMPILE_LANGUAGE:CUDA>:-O3>
 )
+
+# Online Softmax 可执行文件
+add_executable(
+    online_softmax
+    online_softmax.cu
+    kernels.cu
+)
+
+target_compile_options(online_softmax PRIVATE
+    $<$<COMPILE_LANGUAGE:CUDA>:-O3>
+)
