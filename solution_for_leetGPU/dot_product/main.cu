@@ -108,7 +108,7 @@ void test_dot_product(size_t n, int epochs = 100) {
 int main() {
     CHECK_CUDA(cudaDeviceReset());
 
-    // Test various sizes
+    // Test various sizes - powers of 2
     test_dot_product(8, 100);           // Very small
     test_dot_product(256, 100);         // Single block
     test_dot_product(512, 100);         // Multiple blocks (standard kernel)
@@ -117,6 +117,20 @@ int main() {
     test_dot_product(1 << 18, 100);     // 256K elements
     test_dot_product(1 << 20, 100);     // 1M elements
     test_dot_product(1 << 24, 100);     // 16M elements
+    
+    // Test odd sizes and non-aligned lengths
+    test_dot_product(1, 100);           // Single element
+    test_dot_product(3, 100);           // Very small odd
+    test_dot_product(7, 100);           // Small odd
+    test_dot_product(33, 100);          // Odd > warp size
+    test_dot_product(127, 100);         // Odd near block boundary
+    test_dot_product(257, 100);         // Odd > single block
+    test_dot_product(1023, 100);        // Odd, just below vectorized threshold
+    test_dot_product(1025, 100);        // Odd, just above threshold (uses standard kernel)
+    test_dot_product(10007, 100);       // Large prime number
+    test_dot_product(100003, 100);      // Larger prime
+    test_dot_product((1 << 20) + 1, 100);  // 1M + 1 (odd large)
+    test_dot_product((1 << 20) + 3, 100);  // 1M + 3 (odd large, not 4-aligned)
     
     std::cout << "\n============ All tests passed ===========\n" << std::endl;
     return 0;

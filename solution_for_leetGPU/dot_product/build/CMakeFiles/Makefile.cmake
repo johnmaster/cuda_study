@@ -121,7 +121,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/lingbok/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-3.31/Modules/Platform/Linux-NVIDIA-CUDA.cmake"
   "/home/lingbok/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-3.31/Modules/Platform/Linux.cmake"
   "/home/lingbok/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-3.31/Modules/Platform/UnixPaths.cmake"
-  "/home/lingbok/cuda_practice/dot_product/CMakeLists.txt"
+  "/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/CMakeLists.txt"
   "CMakeFiles/3.31.6/CMakeCUDACompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
