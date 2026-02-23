@@ -1,4 +1,4 @@
-CMakeFiles/dot_product.dir/main.cu.o : /home/lingbok/cuda_practice/dot_product/main.cu \
+CMakeFiles/dot_product.dir/main.cu.o : /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/main.cu \
     /usr/include/stdc-predef.h \
     /usr/local/cuda-12.4/bin/../targets/x86_64-linux/include/cuda_runtime.h \
     /usr/local/cuda-12.4/bin/../targets/x86_64-linux/include/crt/host_config.h \
@@ -187,7 +187,7 @@ CMakeFiles/dot_product.dir/main.cu.o : /home/lingbok/cuda_practice/dot_product/m
     /usr/include/c++/11/utility \
     /usr/include/c++/11/bits/stl_relops.h \
     /usr/include/c++/11/initializer_list \
-    /home/lingbok/cuda_practice/dot_product/kernels.cuh \
+    /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/kernels.cuh \
     /usr/include/c++/11/iostream \
     /usr/include/c++/11/ostream \
     /usr/include/c++/11/ios \

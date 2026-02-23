@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/lingbok/cuda_practice/dot_product/kernels.cu" "CMakeFiles/dot_product.dir/kernels.cu.o" "gcc" "CMakeFiles/dot_product.dir/kernels.cu.o.d"
-  "/home/lingbok/cuda_practice/dot_product/main.cu" "CMakeFiles/dot_product.dir/main.cu.o" "gcc" "CMakeFiles/dot_product.dir/main.cu.o.d"
+  "/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/kernels.cu" "CMakeFiles/dot_product.dir/kernels.cu.o" "gcc" "CMakeFiles/dot_product.dir/kernels.cu.o.d"
+  "/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/main.cu" "CMakeFiles/dot_product.dir/main.cu.o" "gcc" "CMakeFiles/dot_product.dir/main.cu.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

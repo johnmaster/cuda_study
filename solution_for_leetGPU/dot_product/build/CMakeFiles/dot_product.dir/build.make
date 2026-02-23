@@ -53,10 +53,10 @@ RM = /home/lingbok/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lingbok/cuda_practice/dot_product
+CMAKE_SOURCE_DIR = /home/lingbok/cuda_study/solution_for_leetGPU/dot_product
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lingbok/cuda_practice/dot_product/build
+CMAKE_BINARY_DIR = /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/dot_product.dir/depend.make
@@ -73,10 +73,10 @@ CMakeFiles/dot_product.dir/codegen:
 .PHONY : CMakeFiles/dot_product.dir/codegen
 
 CMakeFiles/dot_product.dir/main.cu.o: CMakeFiles/dot_product.dir/flags.make
-CMakeFiles/dot_product.dir/main.cu.o: /home/lingbok/cuda_practice/dot_product/main.cu
+CMakeFiles/dot_product.dir/main.cu.o: /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/main.cu
 CMakeFiles/dot_product.dir/main.cu.o: CMakeFiles/dot_product.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lingbok/cuda_practice/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/dot_product.dir/main.cu.o"
-	/usr/local/cuda-12.4/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/dot_product.dir/main.cu.o -MF CMakeFiles/dot_product.dir/main.cu.o.d -x cu -c /home/lingbok/cuda_practice/dot_product/main.cu -o CMakeFiles/dot_product.dir/main.cu.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/dot_product.dir/main.cu.o"
+	/usr/local/cuda-12.4/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/dot_product.dir/main.cu.o -MF CMakeFiles/dot_product.dir/main.cu.o.d -x cu -c /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/main.cu -o CMakeFiles/dot_product.dir/main.cu.o
 
 CMakeFiles/dot_product.dir/main.cu.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CUDA source to CMakeFiles/dot_product.dir/main.cu.i"
@@ -87,10 +87,10 @@ CMakeFiles/dot_product.dir/main.cu.s: cmake_force
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/dot_product.dir/kernels.cu.o: CMakeFiles/dot_product.dir/flags.make
-CMakeFiles/dot_product.dir/kernels.cu.o: /home/lingbok/cuda_practice/dot_product/kernels.cu
+CMakeFiles/dot_product.dir/kernels.cu.o: /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/kernels.cu
 CMakeFiles/dot_product.dir/kernels.cu.o: CMakeFiles/dot_product.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lingbok/cuda_practice/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CUDA object CMakeFiles/dot_product.dir/kernels.cu.o"
-	/usr/local/cuda-12.4/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/dot_product.dir/kernels.cu.o -MF CMakeFiles/dot_product.dir/kernels.cu.o.d -x cu -c /home/lingbok/cuda_practice/dot_product/kernels.cu -o CMakeFiles/dot_product.dir/kernels.cu.o
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CUDA object CMakeFiles/dot_product.dir/kernels.cu.o"
+	/usr/local/cuda-12.4/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/dot_product.dir/kernels.cu.o -MF CMakeFiles/dot_product.dir/kernels.cu.o.d -x cu -c /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/kernels.cu -o CMakeFiles/dot_product.dir/kernels.cu.o
 
 CMakeFiles/dot_product.dir/kernels.cu.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CUDA source to CMakeFiles/dot_product.dir/kernels.cu.i"
@@ -114,7 +114,7 @@ dot_product: CMakeFiles/dot_product.dir/build.make
 dot_product: CMakeFiles/dot_product.dir/linkLibs.rsp
 dot_product: CMakeFiles/dot_product.dir/objects1.rsp
 dot_product: CMakeFiles/dot_product.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lingbok/cuda_practice/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CUDA executable dot_product"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CUDA executable dot_product"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/dot_product.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -126,6 +126,6 @@ CMakeFiles/dot_product.dir/clean:
 .PHONY : CMakeFiles/dot_product.dir/clean
 
 CMakeFiles/dot_product.dir/depend:
-	cd /home/lingbok/cuda_practice/dot_product/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lingbok/cuda_practice/dot_product /home/lingbok/cuda_practice/dot_product /home/lingbok/cuda_practice/dot_product/build /home/lingbok/cuda_practice/dot_product/build /home/lingbok/cuda_practice/dot_product/build/CMakeFiles/dot_product.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lingbok/cuda_study/solution_for_leetGPU/dot_product /home/lingbok/cuda_study/solution_for_leetGPU/dot_product /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build /home/lingbok/cuda_study/solution_for_leetGPU/dot_product/build/CMakeFiles/dot_product.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/dot_product.dir/depend
 
