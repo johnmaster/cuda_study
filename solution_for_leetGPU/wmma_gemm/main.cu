@@ -254,6 +254,57 @@ void run_benchmark(int M, int N, int K) {
         }
     }
 
+    // 版本5: Large Tile 128x64
+    {
+        CHECK_CUDA(cudaMemset(d_C, 0, size_C * sizeof(float)));
+        float time_ms = benchmark_kernel(launch_wmma_gemm_v5, d_A, d_B, d_C, M, N, K);
+        double tflops = flops / (time_ms * 1e9);
+        float speedup = cublas_time / time_ms;
+        std::cout << std::setw(25) << "V5: Large Tile 128x64"
+                  << std::setw(15) << std::fixed << std::setprecision(3) << time_ms
+                  << std::setw(15) << std::fixed << std::setprecision(2) << tflops
+                  << std::setw(15) << std::fixed << std::setprecision(2) << speedup << "x" << std::endl;
+        
+        CHECK_CUDA(cudaMemcpy(h_C, d_C, size_C * sizeof(float), cudaMemcpyDeviceToHost));
+        if (!verify_result(h_C_ref, h_C, size_C)) {
+            std::cout << "  [FAILED] Result mismatch!" << std::endl;
+        }
+    }
+
+    // 版本6: cp.async Pipeline
+    {
+        CHECK_CUDA(cudaMemset(d_C, 0, size_C * sizeof(float)));
+        float time_ms = benchmark_kernel(launch_wmma_gemm_v6, d_A, d_B, d_C, M, N, K);
+        double tflops = flops / (time_ms * 1e9);
+        float speedup = cublas_time / time_ms;
+        std::cout << std::setw(25) << "V6: cp.async Pipeline"
+                  << std::setw(15) << std::fixed << std::setprecision(3) << time_ms
+                  << std::setw(15) << std::fixed << std::setprecision(2) << tflops
+                  << std::setw(15) << std::fixed << std::setprecision(2) << speedup << "x" << std::endl;
+        
+        CHECK_CUDA(cudaMemcpy(h_C, d_C, size_C * sizeof(float), cudaMemcpyDeviceToHost));
+        if (!verify_result(h_C_ref, h_C, size_C)) {
+            std::cout << "  [FAILED] Result mismatch!" << std::endl;
+        }
+    }
+
+    // 版本7: Combined (Large Tile + cp.async)
+    {
+        CHECK_CUDA(cudaMemset(d_C, 0, size_C * sizeof(float)));
+        float time_ms = benchmark_kernel(launch_wmma_gemm_v7, d_A, d_B, d_C, M, N, K);
+        double tflops = flops / (time_ms * 1e9);
+        float speedup = cublas_time / time_ms;
+        std::cout << std::setw(25) << "V7: Combined Best"
+                  << std::setw(15) << std::fixed << std::setprecision(3) << time_ms
+                  << std::setw(15) << std::fixed << std::setprecision(2) << tflops
+                  << std::setw(15) << std::fixed << std::setprecision(2) << speedup << "x" << std::endl;
+        
+        CHECK_CUDA(cudaMemcpy(h_C, d_C, size_C * sizeof(float), cudaMemcpyDeviceToHost));
+        if (!verify_result(h_C_ref, h_C, size_C)) {
+            std::cout << "  [FAILED] Result mismatch!" << std::endl;
+        }
+    }
+
     // 清理
     CHECK_CUBLAS(cublasDestroy(handle));
     CHECK_CUDA(cudaFree(d_A));
