@@ -332,3 +332,184 @@ Global Memory (HBM/GDDR，实际数据存储位置)
 3. **小量只读数据，所有线程读相同值** → Constant Memory
 4. **大量数据** → Global Memory（注意合并访问）
 5. **避免使用** → Local Memory（会自动产生，尽量避免）
+
+---
+
+# GPU 设备信息查询
+
+在 CUDA 开发中，了解当前 GPU 的硬件参数（SM 数量、线程限制、共享内存大小、是否支持 Tensor Core 等）是性能调优的基础。查询方法分为**命令行工具**和**编程 API** 两大类。
+
+## 一、命令行工具：nvidia-smi
+
+`nvidia-smi`（NVIDIA System Management Interface）是驱动自带的命令行工具，无需编程即可使用。
+
+### 1. 直接运行（最常用）
+
+```bash
+nvidia-smi
+```
+
+显示仪表盘式输出：GPU 型号、温度、功耗、显存使用率、正在运行的 GPU 进程。**想看"显存还剩多少"时就敲这个。**
+
+### 2. 结构化查询：`--query-gpu`
+
+```bash
+nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,memory.free,compute_cap --format=csv
+```
+
+- `--query-gpu=字段1,字段2,...`：指定要查的字段
+- `--format=csv`：以 CSV 格式输出，方便脚本解析
+
+常用字段：
+
+| 字段 | 含义 |
+|------|------|
+| `name` | GPU 型号名称 |
+| `driver_version` | 驱动版本 |
+| `memory.total` | 总显存 |
+| `memory.used` | 已用显存 |
+| `memory.free` | 剩余显存 |
+| `compute_cap` | 计算能力 (Compute Capability) |
+| `temperature.gpu` | GPU 温度 |
+| `power.draw` | 当前功耗 |
+| `clocks.sm` | SM 时钟频率 |
+| `utilization.gpu` | GPU 利用率 |
+
+查看所有支持的字段：`nvidia-smi --help-query-gpu`
+
+### 3. 全量详细信息
+
+```bash
+nvidia-smi -q
+```
+
+输出非常长，包含 PCI 总线、功耗限制、ECC 状态等几乎所有驱动层面的信息。
+
+### 4. nvidia-smi 的局限
+
+`nvidia-smi` **无法查询** SM 数量、每 SM 线程数、共享内存大小、寄存器数量等硬件微架构参数——这些必须通过 CUDA Runtime API 编程获取。
+
+## 二、CUDA 编译器版本：nvcc
+
+```bash
+nvcc --version
+```
+
+仅查看 **CUDA Toolkit 版本**（如 12.4），不查硬件参数。但需要确认 Toolkit 版本是否支持目标特性（如 WMMA 需要 CUDA 9.0+）。
+
+## 三、编程查询：cudaGetDeviceProperties（最全面）
+
+这是获取 GPU 硬件参数的**核心 API**，SM 数、线程数、共享内存等信息只有通过编程才能拿到。
+
+### 核心用法（两步）
+
+```cpp
+cudaDeviceProp prop;                         // 第1步：声明结构体
+cudaGetDeviceProperties(&prop, device_id);   // 第2步：传入设备ID，填充结构体
+// 然后通过 prop.xxx 访问各字段
+```
+
+### cudaDeviceProp 关键字段
+
+#### 身份信息
+
+| 字段 | 含义 | RTX 3080 示例值 |
+|------|------|----------------|
+| `prop.name` | GPU 名称 | "NVIDIA GeForce RTX 3080" |
+| `prop.major` | Compute Capability 主版本号 | 8 |
+| `prop.minor` | Compute Capability 次版本号 | 6 |
+
+`prop.major` 和 `prop.minor` 合起来就是计算能力，如 8.6。
+
+#### SM 与线程（最重要）
+
+| 字段 | 含义 | RTX 3080 值 |
+|------|------|------------|
+| `prop.multiProcessorCount` | SM（流多处理器）数量 | 68 |
+| `prop.maxThreadsPerMultiProcessor` | 每个 SM 最大驻留线程数 | 1536 |
+| `prop.warpSize` | Warp 大小（永远32） | 32 |
+| `prop.maxThreadsPerBlock` | 单个 Block 最大线程数 | 1024 |
+| `prop.maxBlocksPerMultiProcessor` | 每个 SM 最大驻留 Block 数 | 16 |
+
+**这些数字之间的关系**：
+- 每 SM 最多 1536 线程 ÷ warp 大小 32 = 每 SM 最多 **48 个 warp**
+- 全卡理论最大线程 = SM 数 × 每 SM 最大线程 = 68 × 1536 = **104,448**
+- 每个 Block 最多 1024 线程，但每 SM 最多 16 个 Block，且总线程不超过 1536
+
+#### 内存层次
+
+| 字段 | 含义 | RTX 3080 值 |
+|------|------|------------|
+| `prop.totalGlobalMem` | 全局显存（字节） | ~10 GB |
+| `prop.sharedMemPerMultiprocessor` | 每 SM 共享内存总量 | 100 KB |
+| `prop.sharedMemPerBlock` | 每 Block 可用共享内存（默认） | 48 KB |
+| `prop.regsPerMultiprocessor` | 每 SM 寄存器总数 | 65536 |
+| `prop.regsPerBlock` | 每 Block 可用寄存器数 | 65536 |
+| `prop.l2CacheSize` | L2 缓存大小 | 5 MB |
+
+### 判断 WMMA / Tensor Core 支持
+
+WMMA（Warp Matrix Multiply-Accumulate）是 Tensor Core 的编程接口：
+
+```cpp
+bool wmma_support = (prop.major > 7) || (prop.major == 7 && prop.minor >= 0);
+// Compute Capability >= 7.0 即支持 WMMA
+```
+
+不同代的 Tensor Core 支持的精度：
+
+| Compute Capability | 架构 | 支持精度 |
+|---|---|---|
+| 7.0 (V100) | Volta | FP16 |
+| 7.5 (RTX 2080) | Turing | FP16 |
+| 8.0 (A100) | Ampere | FP16, BF16, TF32, INT8 |
+| 8.6 (RTX 3080) | Ampere | FP16, BF16, TF32 |
+| 9.0 (H100) | Hopper | FP16, BF16, TF32, FP8 |
+
+## 四、单属性查询：cudaDeviceGetAttribute
+
+如果只需查**某一个属性**，不需要填充整个结构体：
+
+```cpp
+int value;
+cudaDeviceGetAttribute(&value, cudaDevAttrMultiProcessorCount, 0);
+// 参数：输出指针, 属性枚举值, 设备ID
+```
+
+常用枚举值：
+
+| 枚举值 | 含义 |
+|--------|------|
+| `cudaDevAttrMultiProcessorCount` | SM 数量 |
+| `cudaDevAttrMaxThreadsPerMultiProcessor` | 每 SM 最大线程 |
+| `cudaDevAttrMaxThreadsPerBlock` | 每 Block 最大线程 |
+| `cudaDevAttrMaxSharedMemoryPerMultiprocessor` | 每 SM 共享内存 |
+| `cudaDevAttrMaxRegistersPerMultiprocessor` | 每 SM 寄存器 |
+
+## 五、完整查询工具代码
+
+项目根目录下的 `device_query.cu` 是一个完整的查询工具：
+
+```bash
+nvcc -o device_query device_query.cu
+./device_query
+```
+
+程序逻辑：
+1. `cudaGetDeviceCount(&count)` → 获取 GPU 数量
+2. 循环每块 GPU，调用 `cudaGetDeviceProperties(&prop, id)` 填充属性
+3. 打印 SM、线程、内存、WMMA 等信息
+4. 根据 `prop.major` 判断 Tensor Core 支持和精度
+
+## 六、查询方法速查表
+
+| 你想查的 | 用什么 | 命令/代码 |
+|----------|--------|-----------|
+| 显存用量、温度、功耗 | nvidia-smi | `nvidia-smi` |
+| GPU 型号、驱动版本 | nvidia-smi | `nvidia-smi --query-gpu=name,driver_version --format=csv` |
+| CUDA Toolkit 版本 | nvcc | `nvcc --version` |
+| SM 数量 | 编程 | `prop.multiProcessorCount` |
+| 每 SM 最大线程数 | 编程 | `prop.maxThreadsPerMultiProcessor` |
+| 共享内存大小 | 编程 | `prop.sharedMemPerMultiprocessor` |
+| 是否支持 WMMA | 编程 | `prop.major >= 7` |
+| 全部硬件参数 | 编程 | 编译运行 `device_query.cu` |
