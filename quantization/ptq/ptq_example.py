@@ -27,10 +27,11 @@ def compute_scale_minmax(tensor: torch.Tensor):
 
 def compute_scale_percentile(tensor: torch.Tensor, percentile=99.99):
     """百分位校准（抗异常值）"""
-    k = int(tensor.numel() * (1 - percentile / 100))
+    t = tensor.flatten()
+    k = int(t.numel() * (1 - percentile / 100))
     k = max(k, 1)
-    upper = tensor.kthvalue(tensor.numel() - k).values
-    lower = tensor.kthvalue(k).values
+    upper = t.kthvalue(t.numel() - k).values
+    lower = t.kthvalue(k).values
     return (upper - lower) / 255.0
 
 

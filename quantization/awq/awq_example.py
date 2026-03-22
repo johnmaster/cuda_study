@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     # 展示缩放因子在异常值通道上的效果
     print("--- 缩放因子分析 ---")
-    _, scales_4bit, alpha = awq_scale_search(W, X, bits=4)
+    scales_4bit, alpha, _ = awq_scale_search(W, X, bits=4)
     print(f"最优 α = {alpha:.2f}")
     print(f"缩放因子统计: mean={scales_4bit.mean():.4f}, "
           f"max={scales_4bit.max():.4f}")

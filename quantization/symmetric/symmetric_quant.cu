@@ -93,16 +93,9 @@ int main() {
     printf("Memory: FP32 = %d bytes, INT8 = %d bytes (%.1fx compression)\n",
            (int)(N * sizeof(float)), (int)(N * sizeof(int8_t)),
            (float)sizeof(float) / sizeof(int8_t));
-    printf("\nSamples:\n");
-    for (int i = 0; i < 5; i++) {
-        printf("  [%d] original=%.6f  quantized=%d  recovered=%.6f\n",
-               i, h_input[i], (int)((int8_t*)0), h_output[i]);
-    }
-
-    // 把量化值也拷回来打印
     int8_t* h_quant = (int8_t*)malloc(N * sizeof(int8_t));
     cudaMemcpy(h_quant, d_quant, N * sizeof(int8_t), cudaMemcpyDeviceToHost);
-    printf("\nSamples (corrected):\n");
+    printf("\nSamples:\n");
     for (int i = 0; i < 5; i++) {
         printf("  [%d] original=%.6f  quantized=%4d  recovered=%.6f  error=%.6f\n",
                i, h_input[i], (int)h_quant[i], h_output[i],
