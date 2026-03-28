@@ -14,6 +14,10 @@ constexpr int WMMA_K = 16;
 // ============================================================================
 // 版本1: 基础 WMMA 实现
 // 每个 warp 计算一个 16x16 的输出块
+//
+// English: One block covers four 16x16 output tiles stacked vertically along
+// the same column of C; blockIdx.x selects the tile column, blockIdx.y selects
+// the next group of four tile-rows (along M).
 // ============================================================================
 __global__ void wmma_gemm_v1_naive(
     const half* __restrict__ A,
@@ -21,9 +25,18 @@ __global__ void wmma_gemm_v1_naive(
     float* __restrict__ C,
     int M, int N, int K
 ) {
-   // 计算当前 warp 负责的输出块位置
-    int warpM = (blockIdx.y * blockDim.y + threadIdx.y);
-    int warpN = (blockIdx.x * blockDim.x + threadIdx.x) / 32;
+    // One block = four 16x16 tiles in one column of C (stacked along M);
+    // blockIdx.x -> tile column; blockIdx.y -> which group of four tile-rows.
+    // -------------------------------------------------------------------------
+    // 输出 C 按 16×16 切块，(warpM, warpN) = 当前 warp 负责的那一块在「块网格」里的索引。
+    // block(32,4)：threadIdx.x∈[0,31] 为一个 warp；threadIdx.y∈[0,3] 共 4 个 warp。
+    // 同一 block 内 4 个 warp 的 warpN 相同（同一列块），warpM 相差 0,1,2,3（上下叠 4 行块）。
+    // -------------------------------------------------------------------------
+    // warpM：M 方向第几块。blockIdx.y 是「竖条组」编号，每组占 4 行块；threadIdx.y 是组内第几行。
+    int warpM = blockIdx.y * blockDim.y + threadIdx.y;
+    // warpN：N 方向第几块。本布局下每 block 只在 N 上占一列块，故 warpN == blockIdx.x
+    // （原式 (blockIdx.x*32+threadIdx.x)/32 在 threadIdx.x<32 时恒等于 blockIdx.x，32 来自 warp 宽度）。
+    int warpN = blockIdx.x;
  
     // 边界检查
     if (warpM * WMMA_M >= M || warpN * WMMA_N >= N) return;
@@ -841,9 +854,16 @@ __global__ void wmma_gemm_v7_combined(
 }
 
 // Wrapper 函数
+// Grid/block: one block = four 16x16 tiles stacked in the same column of C;
+// blockIdx.x steps along N (tile columns), blockIdx.y steps along groups of four tile-rows (M).
 void launch_wmma_gemm_v1(const half* A, const half* B, float* C, int M, int N, int K) {
-    dim3 block(32, 4);  // 4 warps per block
-    dim3 grid((N + WMMA_N - 1) / WMMA_N, (M + WMMA_M - 1) / WMMA_M / 4);
+    dim3 block(32, 4);  // 4 warps per block；x=32 为 warp 宽度，y=4 为每 block 在 M 方向占 4 个 16×16 块
+    // grid.x：N 方向需要多少「列」块，与 warpN = blockIdx.x 一致。
+    // grid.y：M 方向需要多少「组」，每组 4 行块（对应 4 个 warp），须 ceil(tileRows/4)，不能整除向下取整。
+    const int tile_cols = (N + WMMA_N - 1) / WMMA_N;
+    const int tile_rows = (M + WMMA_M - 1) / WMMA_M;
+    const int grid_y = (tile_rows + 4 - 1) / 4;
+    dim3 grid(tile_cols, grid_y);
     wmma_gemm_v1_naive<<<grid, block>>>(A, B, C, M, N, K);
 }
 

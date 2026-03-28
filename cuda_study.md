@@ -59,6 +59,26 @@ c++自定义函数和CUDA核函数的定义（实现）
   * 不能同时用`__device__`和`__global__`修饰一个函数，即不能将一个函数同时定义为设备函数和核函数
   * 不能同时用`__host__`和`__global__`修饰一个函数，即不能将一个函数同时定义为主机函数和核函数
   * 编译器决定把设备函数当作内联函数或非内联函数，但可以用修饰符`__noinline__`建议一个设备函数为非内联函数，也可以用修饰符`__forceinline__`建议一个设备函数为内联函数
+
+## `__restrict__` 限定符（指针别名约定）
+
+* **含义**：`__restrict__` 来自 C99 的 `restrict` 语义（CUDA / nvcc 中常用双下划线写法 `__restrict__`，也可用 `__restrict`）。加在某个**指针参数**上，表示：在**该指针的有效作用域内**，程序员保证**不会**再通过**其它指针**去读写同一块内存（即不存在 **aliasing / 别名**）。
+* **编译器能做什么**：知道「只有这条指针会访问这段对象」之后，可以更激进地做 **load/store 复用、指令重排、向量化** 等优化；若实际上存在别名却写了 `__restrict__`，属于 **未定义行为**，可能算错结果。
+* **典型写法**（核函数里很常见）：
+  ```cuda
+  __global__ void kernel(const float* __restrict__ src,
+                         float* __restrict__ dst,
+                         int n) {
+      int i = blockIdx.x * blockDim.x + threadIdx.x;
+      if (i < n) dst[i] = src[i] * 2.f;
+  }
+  ```
+* **与 `const` 的区别**：`const float*` 只表示**不能通过该指针修改**所指数据；**不**表示「没有别的可写指针指向同一块内存」。`__restrict__` 专门约束**别名关系**，二者可一起用：`const float* __restrict__ p`。
+* **使用注意**：
+  * 若 `src` 与 `dst` **可能重叠**（同一缓冲区、子区间重叠等），**不要**对它们同时标 `__restrict__`。
+  * 主机端 C++ 代码里 MSVC 常用 `__restrict`，GCC/Clang 用 `__restrict__` 或 `restrict`（C 模式）；CUDA 源文件里 **`__restrict__` 最通用**。
+  * 这是**优化提示 + 程序员契约**，不是「自动防止越界」或「自动防止数据竞争」；多线程同时写同一全局区仍需自己用原子或同步保证正确性。
+
 * 有一种方法可以捕捉调用核函数可能发生的错误，即在调用核函数之后加上如下两个语句
   * `CHECK(cudaGetLastError())`
   * `CHECK(cudaDeviceSynchronize())`
