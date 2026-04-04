@@ -227,6 +227,132 @@ __device__ int warpReduce(int val) {
 
 * 4种shuffle操作
 
+## WMMA 常用 API（Warp Matrix Multiply-Accumulate）
+
+WMMA 是 CUDA 提供的 **Warp 级矩阵乘加** 接口，由 **Tensor Core** 执行。典型配置为 **`m16n16k16`**（`half`×`half` → `float` 累加）。**一个 warp（32 线程）** 协同调用下列 API；不能只用部分 lane。
+
+* **头文件与命名空间**：`#include <mma.h>`，使用 `using namespace nvcuda;` 后前缀写 `wmma::`，或写全名 `nvcuda::wmma::`。
+
+### `wmma::fragment`
+
+* **作用**：在寄存器里表示参与 WMMA 的一小块矩阵（**逻辑视图**；数据实际分布在 warp 各 lane 的寄存器中）。
+* **模板参数**（常见）：
+  * **角色**：`wmma::matrix_a`、`wmma::matrix_b`、`wmma::accumulator`
+  * **尺寸**：`M, N, K`（如 `16, 16, 16`），须与架构支持的 WMMA 配置一致
+  * **A/B 的元素类型**：如 `half`、`__nv_bfloat16` 等（视 GPU 而定）
+  * **A 的布局**：`wmma::row_major` 或 `wmma::col_major`（**必须与内存中数据布局一致**）
+  * **B 的布局**：同样有 row/col 要求，且要与 `mma_sync` 规定的 A×B 语义匹配
+* **accumulator** 常为 **`float`**（半精度乘、单精度累加）。
+
+```cuda
+wmma::fragment<wmma::matrix_a, 16, 16, 16, half, wmma::row_major> a_frag;
+wmma::fragment<wmma::matrix_b, 16, 16, 16, half, wmma::row_major> b_frag;
+wmma::fragment<wmma::accumulator, 16, 16, 16, float> acc_frag;
+```
+
+### `wmma::fill_fragment`
+
+* **作用**：把累加器 fragment **初始化为常数**（通常为 `0`，做 GEMM 累加前清零）。
+* **调用**：`wmma::fill_fragment(acc_frag, 0.0f);`
+
+### `wmma::load_matrix_sync`
+
+* **作用**：从 **全局内存或共享内存** 按指定布局把 **`M×K`（A）或 `K×N`（B）** 的子块加载到 fragment；**整 warp 同步**执行。
+* **典型形式**：`load_matrix_sync(frag, ptr, ldm)`
+  * **`ptr`**：子块**左上角**元素在内存中的地址（`const half*` 等）
+  * **`ldm`（leading dimension）**：行主序下 **「一整行」在内存中占多少个元素**（即下一行相对上一行起始的步长）。例如：大矩阵 A 为 `M×K` 行主序存则 **`ldm = K`**；共享数组 `As[BLOCK_M][BLOCK_K]` 则 **`ldm = BLOCK_K`**。填错会导致读串行、结果错误。
+
+### `wmma::mma_sync`
+
+* **作用**：执行 **`D = A×B + D`**（矩阵乘加），**D** 为 accumulator fragment；**整 warp** 同步。
+* **典型形式**：`mma_sync(acc_frag, a_frag, b_frag, acc_frag);`
+* **语义**：在 K 维上需在外层循环中多次调用（每次处理 `K` 步中的 16），把多段结果累加到同一 `acc_frag`。
+
+### `wmma::store_matrix_sync`
+
+* **作用**：把 accumulator fragment 写回内存（全局或共享）；**整 warp** 同步。
+* **典型形式**：`store_matrix_sync(ptr, acc_frag, ldm, wmma::mem_row_major);`
+  * **`ptr`**：输出子块左上角在 C 中的地址
+  * **`ldm`**：C 行主序时一般为 **矩阵列数 `N`**（与 `load` 同理：行的 leading dimension）
+  * **最后一参**：输出内存布局，如 `wmma::mem_row_major`
+
+### 使用注意小结
+
+| 项目 | 说明 |
+|------|------|
+| 线程要求 | 每次 `load` / `mma` / `store` 需 **同一 warp 内 32 线程同时参与** |
+| `ldm` | **行主序「行跨度」**；与物理存储一致，不是子块宽度那么简单 |
+| 布局 | `fragment` 声明的布局须与 `ptr` 所指数据一致 |
+| 算力与架构 | 需支持 Tensor Core 的 SM；具体 `M,N,K` 与类型以 **官方文档 / `cuda_fp16.h` + 架构** 为准 |
+| 边界 | 若 `M,N` 非 16 整数倍，需 **padding** 或 **额外边界处理**，避免越界或脏写 |
+
+### 与 Tensor Core 的关系（对应前文 SM 图）
+
+* **Tensor Core**：专做小块矩阵乘加的硬件单元；WMMA API 是其主要编程入口之一（另有 CUDA C++ `mma.sync` PTX 等更底层用法）。
+* 高吞吐 GEMM 往往：**block 协作搬运到 shared → 各 warp 反复 `load`→`mma`→最后 `store`**（见 `wmma_gemm` 等实现）。
+
+## `cp.async` 异步拷贝（Global → Shared）
+
+与 WMMA / Tensor Core GEMM 常一起出现：**在数据还在从显存往共享内存搬的时候，让 SM 继续算上一批 tile**，属于 **指令级异步内存子系统**，不是主机端的 `cudaMemcpy`。
+
+### 是什么技术
+
+* **名称**：NVIDIA PTX 里的 **`cp.async`**（**asynchronous copy**）指令族。
+* **典型方向**：**Global Memory → Shared Memory**（kernel 内细粒度搬运）。
+* **架构**：**Ampere（SM 8.0）及更新架构**上广泛使用（具体能力与变体以 **CUDA / PTX 文档** 为准）。
+* **和什么并列**：与较高层的 **`cuda::memcpy_async`**（C++ API）等属于同一类「异步数据搬运」思路；也可手写 **`asm volatile` 内联 PTX** 直接发射 `cp.async`。
+
+### 典型指令形式（内联汇编）
+
+```cuda
+asm volatile(
+    "cp.async.cg.shared.global [%0], [%1], 16;\n"
+    :: "r"(smem_addr), "l"(gmem_ptr));
+```
+
+| 片段 | 含义 |
+|------|------|
+| `cp.async` | **异步**发起拷贝，可在约束下与后续指令 **重叠执行**（由硬件完成搬运） |
+| `.shared.global` | **目的地址**在 **shared**，**源地址**在 **global** |
+| `.cg` | **缓存提示**（cache global）：倾向把数据当「全局可复用」类访问处理（具体以架构文档为准，非改变语义必选） |
+| `16` | 本次拷贝 **16 字节**（常配合 `half`/`float4` 等对齐向量） |
+| `smem_addr` / `gmem_ptr` | 共享内存与全局内存地址，须满足 **对齐与访问规则**（见官方约束） |
+
+### 同步：何时算「搬完了」
+
+* 异步拷贝发出后，若马上要 **读 shared** 做 WMMA，需用 **`cp.async.wait_group`**（或 `wait_all` 等）保证 **对应批次** 已完成，避免读未就绪数据。
+* 典型 **软件流水线**：多段 **`__shared__` 缓冲（double/triple buffer）** + 循环内 **先发 `cp.async` 预取下一段** → **等 `wait_group`** → **对已到齐的 stage 做 `load_matrix_sync` / `mma_sync`**。
+
+### 与同步全局加载的对比
+
+| 方式 | 特点 |
+|------|------|
+| 普通 `=` 或同步 `ld.global` | 简单；访存与后续指令顺序由内存依赖串起来，难重叠 |
+| `cp.async` + `wait_*` | 显式 **流水**：**隐藏 Global→Shared 延迟**，提高 **Tensor Core 利用率** |
+| `wmma::load_matrix_sync`（从 global） | 仍是 **warp 同步** 路径；与 `cp.async` 可先 **异步灌 shared**，再从 **shared** `load_matrix_sync` 到 fragment |
+
+### 使用注意
+
+* **架构**：旧 GPU 可能 **不支持** 或变体不同，需查 **compute capability**。
+* **对齐与大小**：`cp.async` 常要求 **16B 的倍数**、地址对齐；非法组合会 **trap** 或未定义行为。
+* **`cudaFuncSetAttribute(..., cudaFuncAttributeMaxDynamicSharedMemorySize, ...)`**：调节的是 **launch 第三参动态 shared** 的**上限**；**静态** `__shared__` 数组大小由声明决定。若仅用静态 shared 且未超默认 per-block 上限，该调用可能 **无必要**；传 `0` 表示不额外请求动态 shared 字节数。
+* **调试**：异步与多 stage 交错时，**wait 漏写或 stage 索引错**易导致 **偶发错误结果**，需仔细对照流水线状态机。
+
+### 新架构扩展（Hopper 及以后，概要）
+
+Ampere 上的 **`cp.async` + `wait_group`** 仍是基础模型。从 **Hopper（SM 9.x，如 H100）** 起，异步路径更丰富，常见知识点如下（细节以 **CUDA / PTX Release Notes** 为准）：
+
+* **`mbarrier`（memory barrier in shared memory）**：在共享内存里放 **屏障对象**，用于 **异步拷贝完成** 与 **消费者 warp** 之间的同步；PTX 中有与 **`cp.async`** 联用的变体（如带 **mbarrier** 的异步拷贝），语义比仅 `wait_group` 更灵活（多生产者/多阶段、与 WGMMA 等配合）。
+* **`cp.async.bulk` / Bulk Copy**：**更大粒度** 的异步搬运（Bulk），适合 **整块 tile** 搬运；与早期 **16B 步进** 的 `cp.async` 并存，按场景选用。
+* **TMA（Tensor Memory Accelerator）**：Hopper 引入的 **硬件单元**，支持从 **全局内存** 按 **张量描述符（tensor map）** 向 **共享内存** 发起 **异步、多维步长** 的加载/存储；CUDA 中可通过 **CUDA C++ / PTX / CUTLASS** 等使用。可理解为 **比手写循环 `cp.async` 更「整块、可描述」** 的搬运路径，常与 **Tensor Core 第四代（WGMMA）** 流水线搭配。
+* **后续架构（如 Blackwell）**：在 **TMA、异步内存、新 Tensor Core 指令** 上继续演进；学习时仍以 **当前 toolkit 的 Programming Guide + PTX ISA** 为准，**不可**假定 Hopper 代码零修改即得最优点。
+
+**关系一句话**：**Ampere `cp.async` 是「细粒度异步 Global→Shared」的入门；Hopper+ 在 `mbarrier`、Bulk、`TMA` 上把「谁完成、谁等待、一次搬多大」做得更硬件化、更适合大 tile GEMM。**
+
+### 一句话
+
+**`cp.async` = Ampere 起常用的 PTX 级 Global→Shared 异步拷贝，配合 `wait_group` 与多缓冲，实现 GEMM 等算子中访存与 Tensor Core 计算重叠。**
+
 # 按速度划分
 * Register: 线程独享
 * shared memory: block内线程共享
