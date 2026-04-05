@@ -323,6 +323,27 @@ asm volatile(
 * 异步拷贝发出后，若马上要 **读 shared** 做 WMMA，需用 **`cp.async.wait_group`**（或 `wait_all` 等）保证 **对应批次** 已完成，避免读未就绪数据。
 * 典型 **软件流水线**：多段 **`__shared__` 缓冲（double/triple buffer）** + 循环内 **先发 `cp.async` 预取下一段** → **等 `wait_group`** → **对已到齐的 stage 做 `load_matrix_sync` / `mma_sync`**。
 
+### `cp.async.commit_group` 与 `wait_group` 的配合
+
+PTX 里 **`wait_group n`** 统计的是 **「尚未完成的异步拷贝组（group）」** 的数量上界；**组**要靠 **`cp.async.commit_group`** 划界。
+
+* **`cp.async.commit_group`**（内联写法示例）：
+  ```cuda
+  asm volatile("cp.async.commit_group;\n");
+  ```
+  * **作用**：把 **此指令之前** 已发出的 **`cp.async`** 划为 **同一组** 并 **提交（commit）** 给硬件的组计数逻辑；之后再发的 `cp.async` 属于 **下一组**，直到下一次 `commit_group`。
+  * **直觉**：类似「这一批异步单发完了，打包成一个 logical batch」；**`wait_group`** 等的就是 **这种 batch 完成到还剩几个**。
+
+* **与 `wait_group` 的关系**（记流程即可）：
+  1. 连续多条 **`cp.async...`**（搬一段 tile / 一段 K）  
+  2. **`cp.async.commit_group`** → 记为 **1 个 group**  
+  3. 可再重复 1～2 做下一组（多 stage 流水）  
+  4. **`cp.async.wait_group k`** → 阻塞直到 **未完成 group 数 ≤ k**（例如允许 pipeline 里仍剩 `k` 组在飞，更早的组须已收尾到一定程度）
+
+* **若只用 `wait_group` 从不 `commit_group`**：部分工具链 / 用法下 **组边界依赖默认规则**；显式 **`commit_group`** 是 **推荐** 写法，流水与文档示例（CUTLASS 等）常成对出现。
+
+* **`asm volatile`**：防止优化掉这条「只影响异步子系统状态」的指令。
+
 ### 与同步全局加载的对比
 
 | 方式 | 特点 |
@@ -351,7 +372,7 @@ Ampere 上的 **`cp.async` + `wait_group`** 仍是基础模型。从 **Hopper（
 
 ### 一句话
 
-**`cp.async` = Ampere 起常用的 PTX 级 Global→Shared 异步拷贝，配合 `wait_group` 与多缓冲，实现 GEMM 等算子中访存与 Tensor Core 计算重叠。**
+**`cp.async` = Ampere 起常用的 PTX 级 Global→Shared 异步拷贝；用 `commit_group` 划批、`wait_group` 控制未完成批数，再配合多缓冲，实现 GEMM 等算子中访存与 Tensor Core 计算重叠。**
 
 # 按速度划分
 * Register: 线程独享
