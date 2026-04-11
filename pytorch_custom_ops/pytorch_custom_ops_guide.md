@@ -149,7 +149,26 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
 
 ## 4. 构建方式：JIT vs setup.py
 
-### 4.1 JIT 编译（开发阶段推荐）
+把 CUDA 扩展编进 Python 可 import 的模块，常见两种：**JIT（`torch.utils.cpp_extension.load`）** 与 **`setup.py` + `pip install`**。二者 **运行时算子语义可以完全相同**，差别主要在 **何时编译、产物放哪、工程流程**。
+
+### 4.1 核心区别（一览）
+
+| 维度 | JIT（`load`） | `setup.py` + `pip install` |
+|------|----------------|-----------------------------|
+| **何时编译** | 第一次 **import** 用到 `load()` 的模块时（或命中缓存则跳过） | 执行 **`pip install -e .` / `pip install .`** 时 |
+| **产物位置** | 多在用户目录缓存，如 **`~/.cache/torch_extensions/`**（路径常含哈希） | 装到当前 **Python 环境**（site-packages 或可编辑链接到项目 `build/`） |
+| **首次 import / 启动** | 首编译 **慢**；之后通常较快 | 安装后 **import 快**（已是 `.so`） |
+| **改 `.cu` / `.cpp` 后** | 常 **自动检测并重编**（或清缓存后重编） | 需 **重新** `pip install -e .`（或 `build_ext`） |
+| **典型场景** | 本地实验、教程、快速迭代 kernel | 发 **wheel**、生产部署、团队统一二进制 |
+| **部署** | 需能访问 **源码** 或依赖每台机器上的 **JIT 缓存**（难保证一致） | 只发 **安装包** 即可（版本固定） |
+| **常见依赖** | 建议 **`pip install ninja`** 加速编译 | 构建时同样需要 nvcc；**不要求**为运行时而装 ninja |
+| **Python 里怎么接** | `custom_ops_cuda = load(name=..., sources=[...])` | **`import custom_ops_cuda`**（模块名与 `CUDAExtension(name=...)` 一致） |
+
+**结论**：开发阶段多用 **JIT**；要打包、复现、上线多用 **`setup.py`**。
+
+---
+
+### 4.2 JIT 编译（开发阶段推荐）
 
 ```python
 from torch.utils.cpp_extension import load
@@ -163,10 +182,12 @@ my_cuda = load(
 ```
 
 - 第一次 import 时编译，之后缓存在 `~/.cache/torch_extensions/`
-- 修改 `.cu` 文件后会自动重新编译
-- **需要安装 ninja**：`pip install ninja`
+- 修改 `.cu` 文件后往往会触发重新编译（视缓存键与工具链而定）
+- **建议安装 ninja**：`pip install ninja`
 
-### 4.2 setup.py（发布阶段推荐）
+---
+
+### 4.3 setup.py（发布阶段推荐）
 
 ```python
 from setuptools import setup
@@ -185,16 +206,41 @@ setup(
 )
 ```
 
-安装：`pip install -e .`（可编辑模式）或 `pip install .`。
+安装：**`pip install -e .`**（可编辑模式，改 C++/CUDA 后需再执行一次）或 **`pip install .`**。
 
-### 4.3 两种方式对比
+---
+
+### 4.4 本项目 `01_custom_gelu` 怎么用
+
+`custom_gelu.py` 里用注释区分了两种接法（**二选一，不要同时开**）：
+
+| 方式 | `custom_gelu.py` 写法 | 你需要做的事 |
+|------|----------------------|--------------|
+| **JIT（当前默认）** | 使用 **`load(...)`**，`# import custom_ops_cuda` 保持注释 | 在 `01_custom_gelu` 下直接 **`python test_custom_gelu.py`**，无需先 pip |
+| **setup.py** | **注释掉** 整段 `load(...)`，改为 **`import custom_ops_cuda`** | 在 **`01_custom_gelu`** 目录执行 **`pip install -e .`**，再运行测试 |
+
+**`test_custom_gelu.py` 本身不写构建逻辑**，只 `from custom_gelu import CustomGELU`，因此：
+
+- **默认仓库状态**下测试走的是 **JIT**（与 `custom_gelu.py` 当前实现一致）。
+
+**setup.py 方式命令示例**：
+
+```bash
+cd pytorch_custom_ops/01_custom_gelu
+pip install -e .
+python test_custom_gelu.py
+```
+
+---
+
+### 4.5 两种方式对比（简表，与 4.1 呼应）
 
 | | JIT (`load`) | `setup.py` |
 |---|---|---|
-| 首次延迟 | 高（编译） | 无（预编译） |
-| 修改后重编译 | 自动 | 需要重新 pip install |
-| 适用场景 | 开发/调试 | 发布/部署 |
-| 依赖 | 需要 ninja | 不需要 |
+| 首次延迟 | 高（当场编译） | 安装时编译；之后 import 低延迟 |
+| 修改后重编译 | 多自动 | 需重新 `pip install -e .` |
+| 适用场景 | 开发/调试 | 发布/部署/固定环境 |
+| 依赖 | 建议 ninja | 构建时需 nvcc + setuptools |
 
 ---
 
