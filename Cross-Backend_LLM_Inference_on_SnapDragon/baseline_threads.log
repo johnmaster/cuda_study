@@ -1,0 +1,45 @@
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 1 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       1 |           pp512 |         12.14 ± 1.99 |
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 1 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       1 |           pp512 |         10.80 ± 0.00 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       1 |           tg128 |          4.12 ± 0.01 |
+
+build: 6b80c74 (1)
+
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 2 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       2 |           pp512 |         28.76 ± 0.36 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       2 |           tg128 |          8.37 ± 1.12 |
+
+build: 6b80c74 (1)
+
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 4 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       4 |           pp512 |         55.31 ± 1.33 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       4 |           tg128 |         16.90 ± 0.18 |
+
+build: 6b80c74 (1)
+
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 6 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       6 |           pp512 |         67.05 ± 1.55 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       6 |           tg128 |         17.34 ± 0.75 |
+
+build: 6b80c74 (1)
+
+=== CMD: ./llama-bench -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf -p 512 -n 128 -t 8 ===
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       8 |           pp512 |         54.85 ± 0.47 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       8 |           tg128 |         10.83 ± 0.27 |
+
+build: 6b80c74 (1)
+
+=== Done ===
