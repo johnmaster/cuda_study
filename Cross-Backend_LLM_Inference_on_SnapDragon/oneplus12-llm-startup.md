@@ -322,12 +322,93 @@ cd ~/llama.cpp
 /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf
 ```
 
+### 8.1 在手机 Termux 中直接下载更多量化版本
+
+先创建模型目录：
+
+```bash
+mkdir -p /sdcard/Download/models
+cd /sdcard/Download/models
+```
+
+如果没有 `wget`：
+
+```bash
+pkg install wget
+```
+
+下载 `Q4_0`：
+
+```bash
+wget -O qwen2.5-3b-instruct-q4_0.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_0.gguf
+```
+
+下载 `Q5_K_M`：
+
+```bash
+wget -O qwen2.5-3b-instruct-q5_k_m.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q5_k_m.gguf
+```
+
+下载 `Q8_0`：
+
+```bash
+wget -O qwen2.5-3b-instruct-q8_0.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q8_0.gguf
+```
+
+也可以一次性下载：
+
+```bash
+cd /sdcard/Download/models
+
+wget -O qwen2.5-3b-instruct-q4_0.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_0.gguf
+
+wget -O qwen2.5-3b-instruct-q5_k_m.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q5_k_m.gguf
+
+wget -O qwen2.5-3b-instruct-q8_0.gguf \
+  https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q8_0.gguf
+```
+
+下载完成后确认文件：
+
+```bash
+ls -lh /sdcard/Download/models/qwen2.5-3b-instruct-*.gguf
+```
+
+### 8.2 从电脑下载后传到手机
+
 如果从电脑传模型到手机：
 
 ```bash
 adb shell mkdir -p /sdcard/Download/models
-adb push ~/models/qwen2.5-3b-instruct-q4_k_m.gguf /sdcard/Download/models/
+adb push ~/models/qwen2.5-3b-instruct-q4_0.gguf /sdcard/Download/models/
+adb push ~/models/qwen2.5-3b-instruct-q5_k_m.gguf /sdcard/Download/models/
+adb push ~/models/qwen2.5-3b-instruct-q8_0.gguf /sdcard/Download/models/
 ```
+
+### 8.3 启动时切换不同量化版本
+
+启动 `llama-server` 或 `llama-bench` 时，只需要替换 `-m` 后面的模型文件路径。
+
+例如测试 `Q8_0`：
+
+```bash
+./build/bin/llama-bench \
+  -m /sdcard/Download/models/qwen2.5-3b-instruct-q8_0.gguf \
+  -p 512 \
+  -n 128 \
+  -t 4
+```
+
+一般来说：
+
+- `Q4_0`：文件更小，速度通常较快，质量低于 `Q4_K_M`
+- `Q5_K_M`：质量比 `Q4_K_M` 更好一些，速度和内存占用也更高
+- `Q8_0`：更接近原模型精度，但文件最大、内存占用最高、速度通常更慢
 
 ## 9. 常见问题
 
