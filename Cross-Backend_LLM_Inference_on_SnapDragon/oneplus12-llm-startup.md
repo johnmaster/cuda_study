@@ -7,6 +7,7 @@
 - 运行环境：Termux
 - 推理程序：llama.cpp / llama-server
 - 性能测试：llama-bench
+- 系统分析：Qualcomm Snapdragon Profiler
 - 模型：Qwen2.5-3B-Instruct GGUF Q4_K_M
 - 连接方式：USB-C + ADB
 - 访问方式：电脑通过 `adb forward` 访问手机上的 `llama-server`
@@ -410,7 +411,175 @@ adb push ~/models/qwen2.5-3b-instruct-q8_0.gguf /sdcard/Download/models/
 - `Q5_K_M`：质量比 `Q4_K_M` 更好一些，速度和内存占用也更高
 - `Q8_0`：更接近原模型精度，但文件最大、内存占用最高、速度通常更慢
 
-## 9. 常见问题
+## 9. Qualcomm Snapdragon Profiler 辅助评测
+
+Snapdragon Profiler 用来观察手机运行模型时的 CPU、GPU、DSP、系统 trace、线程状态等信息。它不是替代 `llama-bench` 的工具，而是配合 benchmark 使用：
+
+- `llama-bench`：给出 `tok/s` 等推理性能结果
+- Snapdragon Profiler：观察跑 benchmark 时手机系统内部发生了什么
+
+### 9.1 下载文件
+
+当前下载的包在 Linux 电脑：
+
+```text
+/home/lingbok/Downloads/Snapdragon_Profiler.Core.2026.4.Linux-AnyCPU.gz
+```
+
+这个文件不是 `.deb` 安装包，而是一个 gzip 压缩的 tar 包。解压后里面有 `SnapdragonProfiler/` 目录、`run_sdp.sh`、`SnapdragonProfiler.exe`、`README-Linux.txt` 等文件。
+
+### 9.2 解压安装
+
+可以解压到 `~/Downloads`：
+
+```bash
+cd ~/Downloads
+
+gzip -dc Snapdragon_Profiler.Core.2026.4.Linux-AnyCPU.gz \
+  > Snapdragon_Profiler.Core.2026.4.Linux-AnyCPU.tar
+
+tar -xvf Snapdragon_Profiler.Core.2026.4.Linux-AnyCPU.tar
+```
+
+解压后进入目录：
+
+```bash
+cd ~/Downloads/SnapdragonProfiler
+```
+
+### 9.3 Linux 依赖
+
+Profiler 的 Linux 客户端是 .NET/Mono GUI 程序，所以启动界面需要 `mono`。Mono 只是运行 Profiler 桌面客户端的运行时，不参与手机上的模型推理。
+
+基础依赖：
+
+```bash
+sudo apt update
+sudo apt install default-jre android-tools-adb libgtk-3-0 mono-complete
+```
+
+检查：
+
+```bash
+mono --version
+java -version
+adb version
+```
+
+Profiler 的 README 要求 Mono 6.12 或更高。如果 `run_sdp.sh` 提示版本过低，需要安装新版 Mono。
+
+### 9.4 启动 Profiler
+
+手机先通过 USB 连接电脑，并确认 ADB 可见：
+
+```bash
+adb devices
+```
+
+然后启动 Profiler：
+
+```bash
+cd ~/Downloads/SnapdragonProfiler
+chmod +x run_sdp.sh
+./run_sdp.sh
+```
+
+如果需要手动启动：
+
+```bash
+cd ~/Downloads/SnapdragonProfiler
+LD_LIBRARY_PATH="$PWD:$LD_LIBRARY_PATH" mono SnapdragonProfiler.exe
+```
+
+### 9.5 用 Profiler 配合 llama-bench
+
+推荐流程：
+
+1. Linux 电脑启动 Snapdragon Profiler
+2. Profiler 里连接 OnePlus 12
+3. 开始采集 CPU、System、Perfetto 等 trace
+4. 手机 Termux 或 SSH 进入 Termux 后运行 `llama-bench`
+5. benchmark 跑完后停止采集
+6. 对照 `llama-bench` 的 `tok/s` 和 Profiler 里的 CPU 频率、线程占用、调度、温度/功耗相关信息
+
+例如在手机 Termux 中运行：
+
+```bash
+cd ~/llama.cpp
+
+./build/bin/llama-bench \
+  -m /sdcard/Download/models/qwen2.5-3b-instruct-q4_k_m.gguf \
+  -p 512 \
+  -n 128 \
+  -t 6
+```
+
+也可以运行量化 sweep 脚本，让 Profiler 采集完整过程。
+
+### 9.6 遇到的问题：Gtk-WARNING
+
+启动时可能出现：
+
+```text
+Gtk-WARNING **: Cannot connect attribute 'active' for cell renderer class ...
+```
+
+这个通常只是 GTK# 的 warning，不一定会导致程序退出。真正需要优先处理的是后面的 fatal error。
+
+### 9.7 遇到的问题：libSDPCore.so undefined symbol
+
+曾遇到过：
+
+```text
+mono: symbol lookup error: /home/lingbok/Downloads/SnapdragonProfiler/libSDPCore.so: undefined symbol: _ZNSt3__113__hash_memoryEPKvm
+```
+
+这个问题不是模型问题，也不是 Termux 问题，而是 Linux 电脑上的 C++ 运行库版本不匹配。Profiler 包里的 `libSDPCore.so` 需要更新的 `libc++` / `libc++abi`，而 Ubuntu 22.04 默认可能只加载到较旧版本。
+
+Profiler 的 README 中提到 libc++ / libc++abi 需要较新的 LLVM 版本。可按 LLVM apt 源安装 LLVM 21 相关库：
+
+```bash
+cd ~/Downloads
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 21
+
+sudo apt install libc++-21-dev libc++abi-21-dev
+```
+
+然后用 LLVM 21 的库启动：
+
+```bash
+cd ~/Downloads/SnapdragonProfiler
+
+LD_LIBRARY_PATH="/usr/lib/llvm-21/lib:$PWD:$LD_LIBRARY_PATH" \
+  mono SnapdragonProfiler.exe
+```
+
+如果这样可以启动，再修改 `run_sdp.sh` 中的 `LD_LIBRARY_PATH`：
+
+```bash
+export LD_LIBRARY_PATH=/usr/lib/llvm-21/lib:$PWD:$LD_LIBRARY_PATH
+```
+
+之后用：
+
+```bash
+./run_sdp.sh
+```
+
+### 9.8 Profiler 和 Termux 的关系
+
+Profiler 在 Linux 电脑上运行，通过 ADB 连接手机并采集系统信息。模型仍然是在手机 Termux 里由 `llama.cpp` 执行。
+
+也就是说：
+
+- Linux 电脑：运行 Snapdragon Profiler GUI
+- 手机 Termux：运行 `llama-bench` 或 `llama-server`
+- ADB：让 Profiler 发现和连接手机
+- Mono：只负责启动 Linux 上的 Profiler GUI
+
+## 10. 常见问题
 
 ### `adb reverse tcp:8080 tcp:8080` 报 Address already in use
 
@@ -458,7 +627,7 @@ cmake --build build --target llama-server -j4
 - 先用 `-t 8`
 - 上下文先用 `-c 2048`
 
-## 10. 最短启动流程
+## 11. 最短启动流程
 
 以后只需要三步。
 
