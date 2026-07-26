@@ -1,3 +1,0 @@
-/home/lingbok/cuda_practice/radix_sort/build/CMakeFiles/radix_sort.dir
-/home/lingbok/cuda_practice/radix_sort/build/CMakeFiles/edit_cache.dir
-/home/lingbok/cuda_practice/radix_sort/build/CMakeFiles/rebuild_cache.dir

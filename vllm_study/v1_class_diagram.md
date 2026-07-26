@@ -2,14 +2,14 @@
 
 > **适用版本**：vLLM **v0.8.5**（仓库当前 detached HEAD）
 > **范围**：仅覆盖**单机单卡 + 纯文本模型**的主线代码路径
-> **不包含**（已主动剔除，避免初学时干扰）：
+> **不包含**：
 > - 多模态（vision/audio encoder、`EncoderCacheManager`、`mm_*` 字段）
 > - 分布式推理（DP / TP / PP、Ray、`MultiprocExecutor`、`KVConnector`、pipeline batch queue）
 >
-> 后续要复习这些主题时再补一份单独的文档。
+> 这些主题不在本文档范围内。
 
 聚焦 `vllm/v1/`，覆盖 **从一次 `generate()` 调用到 GPU forward 一遍** 涉及的核心类。
-每张图后面都有"成员/方法速查表"，便于复习时快速定位源码。
+每张图后附有成员/方法速查表，用于快速定位源码。
 
 ## 目录
 
@@ -609,7 +609,7 @@ sequenceDiagram
 
 ---
 
-## 复习要点
+## 核心结论
 
 1. **进程边界**：Frontend ⇄ EngineCore 走 ZMQ；EngineCore ⇄ Worker 在单卡 `UniProcExecutor` 里是同进程直接调用。跨边界要序列化（`EngineCoreRequest` / `SchedulerOutput`）。
 2. **`Scheduler` 唯一持有 `KVCacheManager`**，`KVCacheManager` 唯一持有 `BlockPool`。所有 KV 分配/释放都要从 Scheduler 这条线走。

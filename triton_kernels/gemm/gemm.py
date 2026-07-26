@@ -8,7 +8,7 @@ GEMM (General Matrix Multiply) in Triton — 从 naive 到优化
   V3: + Auto-tuning      — Triton 的 autotune 自动搜索最优参数
 
 对比 CUDA GEMM:
-  - CUDA: 你需要手动管理 shared memory tile、bank conflict、双缓冲、寄存器 tiling
+  - CUDA: 手动管理 shared memory tile、bank conflict、双缓冲、寄存器 tiling
   - Triton: 你只写 tile 级别逻辑，编译器自动做 shared memory 分配 + 合并访问 + 向量化
 
 C = A @ B

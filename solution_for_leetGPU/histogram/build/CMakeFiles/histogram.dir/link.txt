@@ -1,1 +1,0 @@
-/usr/bin/g++ @CMakeFiles/histogram.dir/objects1.rsp -o histogram @CMakeFiles/histogram.dir/linkLibs.rsp -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib"

@@ -1,5 +1,5 @@
 """AWQ (Activation-aware Weight Quantization) 简化实现
-演示核心算法：激活值感知的 Per-Channel 缩放 + 量化
+核心算法：激活值感知的 Per-Channel 缩放 + 量化
 """
 
 import torch

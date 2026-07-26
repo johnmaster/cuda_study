@@ -1,1 +1,0 @@
-/usr/bin/g++ @CMakeFiles/bench.dir/objects1.rsp -o bench @CMakeFiles/bench.dir/linkLibs.rsp -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib"

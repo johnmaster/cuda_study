@@ -147,9 +147,9 @@ def main():
         print(f"  GPU {i}: {g} {'✓' if ok else '✗'}")
     print(f"\n验证: {'通过 ✓' if all_correct else '失败 ✗'}")
 
-    # 示例 2: 2 GPUs（对应你的双卡机器）
+    # 示例 2: 2 GPUs
     print(f"\n\n{'=' * 60}")
-    print(" 示例 2: 2 GPUs（模拟你的 2×2080Ti）")
+    print(" 示例 2: 2 GPUs（2×2080Ti）")
     print("=" * 60)
     print()
 

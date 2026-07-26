@@ -26,7 +26,7 @@ from torch.utils.data import DataLoader
 # ── 模型 ──────────────────────────────────────────────────────────────────
 
 class SmallResNet(nn.Module):
-    """一个简化的 ResNet, 用于快速演示。"""
+    """用于精度与性能对比的简化 ResNet。"""
 
     class Block(nn.Module):
         def __init__(self, ch):

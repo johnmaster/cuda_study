@@ -1,7 +1,7 @@
 """张量并行 (Tensor Parallelism) 手动实现
 
 手动实现 Megatron-style Column/Row Parallel Linear，
-在双卡上演示 Transformer MLP 的张量并行。
+双卡 Transformer MLP 张量并行实现。
 
 运行方式: torchrun --nproc_per_node=2 tensor_parallel.py
 """

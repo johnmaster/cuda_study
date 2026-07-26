@@ -1,8 +1,8 @@
 """
-Elementwise 向量运算 — Triton 入门
+Elementwise 向量运算 — Triton 实现
 
 展示最基础的 1D 并行：每个 program 负责一段连续下标，load → 计算 → store。
-适合理解：program_id、arange、mask 边界、合并访问（连续 BLOCK 对齐）。
+涉及 program_id、arange、mask 边界和合并访问（连续 BLOCK 对齐）。
 
 包含:
   - vector_add: z = x + y

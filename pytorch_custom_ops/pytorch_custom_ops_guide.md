@@ -143,7 +143,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
 
 ### 3.3 TORCH_EXTENSION_NAME 是什么？
 
-这是一个编译时宏，由 `setup.py` 或 JIT 编译器自动定义，值就是你在 `CUDAExtension(name="xxx")` 中指定的名字。Python 端 `import xxx` 就能找到这个模块。
+这是一个编译时宏，由 `setup.py` 或 JIT 编译器自动定义，值为 `CUDAExtension(name="xxx")` 中指定的名字。Python 端通过 `import xxx` 加载该模块。
 
 ---
 
@@ -159,7 +159,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
 | **产物位置** | 多在用户目录缓存，如 **`~/.cache/torch_extensions/`**（路径常含哈希） | 装到当前 **Python 环境**（site-packages 或可编辑链接到项目 `build/`） |
 | **首次 import / 启动** | 首编译 **慢**；之后通常较快 | 安装后 **import 快**（已是 `.so`） |
 | **改 `.cu` / `.cpp` 后** | 常 **自动检测并重编**（或清缓存后重编） | 需 **重新** `pip install -e .`（或 `build_ext`） |
-| **典型场景** | 本地实验、教程、快速迭代 kernel | 发 **wheel**、生产部署、团队统一二进制 |
+| **典型场景** | 本地实验、快速迭代 kernel | 发 **wheel**、生产部署、团队统一二进制 |
 | **部署** | 需能访问 **源码** 或依赖每台机器上的 **JIT 缓存**（难保证一致） | 只发 **安装包** 即可（版本固定） |
 | **常见依赖** | 建议 **`pip install ninja`** 加速编译 | 构建时同样需要 nvcc；**不要求**为运行时而装 ninja |
 | **Python 里怎么接** | `custom_ops_cuda = load(name=..., sources=[...])` | **`import custom_ops_cuda`**（模块名与 `CUDAExtension(name=...)` 一致） |
@@ -214,7 +214,7 @@ setup(
 
 `custom_gelu.py` 里用注释区分了两种接法（**二选一，不要同时开**）：
 
-| 方式 | `custom_gelu.py` 写法 | 你需要做的事 |
+| 方式 | `custom_gelu.py` 写法 | 配置要求 |
 |------|----------------------|--------------|
 | **JIT（当前默认）** | 使用 **`load(...)`**，`# import custom_ops_cuda` 保持注释 | 在 `01_custom_gelu` 下直接 **`python test_custom_gelu.py`**，无需先 pip |
 | **setup.py** | **注释掉** 整段 `load(...)`，改为 **`import custom_ops_cuda`** | 在 **`01_custom_gelu`** 目录执行 **`pip install -e .`**，再运行测试 |
@@ -346,7 +346,7 @@ at::cuda::add_kernel(...)
 
 | 方式 | 适用场景 | 复杂度 |
 |------|---------|--------|
-| pybind11 (`PYBIND11_MODULE`) | 入门、小项目 | 低 |
+| pybind11 (`PYBIND11_MODULE`) | 小型项目 | 低 |
 | `torch.library` (Python API, PyTorch 2.4+) | 需要 torch.compile 兼容 | 中 |
 | `TORCH_LIBRARY` (C++ API) | 大型项目、完整 dispatcher 集成 | 高 |
 
@@ -410,9 +410,9 @@ TORCH_LIBRARY_IMPL(mylib, CUDA, m) {
 
 ### 8.1 问题
 
-如果你用 `pybind11` + `autograd.Function` 方式，`torch.compile` 遇到你的 op 时：
+使用 `pybind11` + `autograd.Function` 时，`torch.compile` 遇到该 op 会：
 - 默认行为：graph break（跳出编译图，回退到 eager 模式）
-- 后果：编译无法覆盖你的 op，失去 fusion 等优化机会
+- 后果：编译无法覆盖该 op，失去 fusion 等优化机会
 
 ### 8.2 解决方案：torch.library + custom_op
 
@@ -439,7 +439,7 @@ def flash_attn_backward(ctx, grad_output):
 flash_attn.register_autograd(flash_attn_backward, setup_context=flash_attn_setup_context)
 ```
 
-### 8.3 渐进式路线
+### 8.3 集成级别
 
 ```
 Level 0: pybind11 + autograd.Function    → 能用，torch.compile 会 graph break
@@ -447,7 +447,7 @@ Level 1: + @torch.compiler.allow_in_graph → 告诉 compile 别 break，但不�
 Level 2: torch.library.custom_op          → 正确集成，compile 能完全追踪
 ```
 
-对于学习阶段，Level 0 完全够用。当你需要让你的 op 在 `torch.compile` 下高效运行时，再升级到 Level 2。
+Level 0 支持基本调用；Level 2 提供 `torch.compile` 所需的完整追踪能力。
 
 ---
 

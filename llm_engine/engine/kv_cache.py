@@ -8,7 +8,7 @@ KV Cache Block 管理器 —— 受 PagedAttention 启发的设计。
 
 与完整 vLLM PagedAttention 的区别（简化处理）：
   - 本实现 KV 仍以连续 tensor 存储（非真正的非连续物理块）
-  - 重点在于演示 BlockAllocator 和 block_table 的调度逻辑
+  - 包含 BlockAllocator 和 block_table 的调度逻辑
   - 真正非连续 block 需要自定义 CUDA kernel 才能高效访问
 """
 

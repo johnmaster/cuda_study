@@ -19,16 +19,10 @@ inference/
     └── batching_simulator.py          #   调度模拟器 + 吞吐量对比
 ```
 
-## 学习路线
-
-1. **01_kv_cache/** — 理解 KV Cache 的必要性、显存占用、Prefill vs Decode
-2. **02_paged_attention/** — 理解 vLLM 如何解决 KV Cache 内存碎片
-3. **03_continuous_batching/** — 理解推理服务如何最大化吞吐
-
-## 面试高频问题
+## 核心问题
 
 1. **KV Cache 显存怎么算？** → 见 01 的公式
 2. **Prefill 和 Decode 的瓶颈分别是什么？** → Compute-bound vs Memory-bound
 3. **PagedAttention 解决了什么问题？** → 内部碎片 + 外部碎片
 4. **Continuous Batching 比 Static 好在哪？** → GPU 利用率 + TTFT
-5. **Speculative Decoding 原理？** → 小模型 draft + 大模型 verify（进阶）
+5. **Speculative Decoding 原理？** → 小模型 draft + 大模型 verify

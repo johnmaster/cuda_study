@@ -1,19 +1,19 @@
 # Mixed Precision Training (混合精度训练)
 
-混合精度训练是 AI Infra 工程师的核心技能。本目录从原理到实践，全面覆盖混合精度相关知识。
+本目录记录混合精度训练的数值原理、框架机制与 CUDA 实现。
 
 ## 目录结构
 
 ```
 mixed_precision/
-├── README.md                           ← 你在这里
-├── mixed_precision_guide.md            ← 完整知识指南 (面试必读)
+├── README.md                           ← 内容索引
+├── mixed_precision_guide.md            ← 原理与实现说明
 │
 ├── 01_amp_basics/                      ← PyTorch AMP 标准用法
 │   ├── amp_training.py                 ← FP32 vs FP16 vs BF16 训练对比
 │   └── amp_autocast_demo.py            ← autocast 内部行为可视化
 │
-├── 02_manual_mixed_precision/          ← 手动实现混合精度 (理解底层)
+├── 02_manual_mixed_precision/          ← 手动实现混合精度
 │   └── manual_amp.py                   ← 手写 FP32 master weights + loss scaling
 │
 └── 03_fp16_kernels/                    ← CUDA 层面的精度对比
@@ -34,7 +34,7 @@ python 01_amp_basics/amp_training.py
 python 01_amp_basics/amp_autocast_demo.py
 ```
 
-### 2. 理解底层原理
+### 2. 手动混合精度
 
 ```bash
 # 手动实现混合精度 (不用 torch.amp)
@@ -63,14 +63,6 @@ cd 03_fp16_kernels && make && ./fp16_gemm_cuda
 | **BF16** | 和 FP32 相同的范围, 不需要 loss scaling |
 | **TF32** | Ampere+ 默认的 FP32 加速模式, 用户代码无需改动 |
 | **Tensor Core** | NVIDIA GPU 的矩阵运算单元, FP16 吞吐 8-16x FP32 |
-
-## 学习路径
-
-1. 先读 `mixed_precision_guide.md` 了解全貌
-2. 运行 `01_amp_basics/` 看 AMP 怎么用
-3. 运行 `02_manual_mixed_precision/` 理解底层机制
-4. 运行 `03_fp16_kernels/` 看 Tensor Core 的真实性能差异
-5. 回到 guide 复习面试问题
 
 ## 依赖
 

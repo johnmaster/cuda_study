@@ -82,7 +82,7 @@ class TransformerBlock(nn.Module):
 
 
 class SmallLM(nn.Module):
-    """小型语言模型用于演示"""
+    """用于 KV Cache 对比的小型语言模型"""
     def __init__(self, vocab_size=1000, hidden_dim=256, n_heads=8,
                  n_layers=4, ffn_dim=1024):
         super().__init__()

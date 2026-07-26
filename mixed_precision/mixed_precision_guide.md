@@ -9,7 +9,7 @@
 5. [Loss Scaling 机制](#5-loss-scaling-机制)
 6. [Tensor Core 与性能](#6-tensor-core-与性能)
 7. [常见问题与调优](#7-常见问题与调优)
-8. [面试高频问题](#8-面试高频问题)
+8. [核心问题](#8-核心问题)
 
 ---
 
@@ -395,7 +395,7 @@ class MyCustomOp(torch.autograd.Function):
 
 ---
 
-## 8. 面试高频问题
+## 8. 核心问题
 
 ### Q1: 混合精度训练为什么能加速?
 

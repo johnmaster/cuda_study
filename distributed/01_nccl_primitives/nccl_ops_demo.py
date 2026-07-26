@@ -1,6 +1,6 @@
-"""NCCL 通信原语实战 Demo
+"""NCCL 通信原语验证
 
-在双卡上演示所有核心通信操作的输入输出。
+输出双卡核心通信操作的输入与结果。
 运行方式: torchrun --nproc_per_node=2 nccl_ops_demo.py
 """
 

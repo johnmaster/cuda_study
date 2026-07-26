@@ -96,9 +96,9 @@ AllReduce  =  ReduceScatter  +  AllGather
 | **Gloo** | CPU/GPU | 中等 | CPU 训练、或 NCCL 不支持的操作 |
 | **MPI** | CPU | 取决于实现 | HPC 场景 |
 
-## 运行 demo
+## 运行
 
 ```bash
-# 在你的双卡机器上运行（2 个进程，各占 1 张 GPU）
+# 双卡运行（2 个进程，各占 1 张 GPU）
 torchrun --nproc_per_node=2 nccl_ops_demo.py
 ```

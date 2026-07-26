@@ -1,3 +1,0 @@
-/home/lingbok/cuda_practice/prefix_sum/build/CMakeFiles/prefix_sum.dir
-/home/lingbok/cuda_practice/prefix_sum/build/CMakeFiles/edit_cache.dir
-/home/lingbok/cuda_practice/prefix_sum/build/CMakeFiles/rebuild_cache.dir

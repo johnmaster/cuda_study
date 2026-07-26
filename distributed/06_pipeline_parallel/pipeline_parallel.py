@@ -1,6 +1,6 @@
 """流水线并行 (Pipeline Parallelism) 手动实现
 
-在双卡上演示 GPipe 和 1F1B 两种调度策略。
+双卡 GPipe 和 1F1B 调度策略实现。
 运行方式: torchrun --nproc_per_node=2 pipeline_parallel.py
 """
 

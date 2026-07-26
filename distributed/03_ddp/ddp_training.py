@@ -1,6 +1,6 @@
 """DDP 分布式数据并行实战
 
-双卡训练一个小模型，演示:
+双卡小模型训练，包含:
 1. DDP 基本训练流程
 2. 梯度同步验证
 3. Gradient Accumulation (no_sync)

@@ -1,5 +1,5 @@
 """GPTQ 简化实现
-演示核心算法：逐列量化 + Hessian 误差补偿
+核心算法：逐列量化 + Hessian 误差补偿
 """
 
 import torch

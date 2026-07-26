@@ -1,6 +1,6 @@
 # LLM Inference Engine
 
-从零手写的 LLM 推理引擎，支持 GPT-2 系列模型，包含：
+支持 GPT-2 系列模型的 LLM 推理引擎实现，包含：
 - KV Cache 管理（Block-based，参考 PagedAttention 设计）
 - Continuous Batching 调度器（iteration-level scheduling）
 - CUDA Fused Decode Attention Kernel

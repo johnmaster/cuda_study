@@ -1,3 +1,0 @@
-/home/lingbok/cuda_practice/softmax/build/CMakeFiles/softmax.dir
-/home/lingbok/cuda_practice/softmax/build/CMakeFiles/edit_cache.dir
-/home/lingbok/cuda_practice/softmax/build/CMakeFiles/rebuild_cache.dir

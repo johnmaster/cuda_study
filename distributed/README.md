@@ -17,11 +17,11 @@ distributed/
 │
 ├── 01_nccl_primitives/                # NCCL 通信原语
 │   ├── README.md                      #   AllReduce/AllGather/ReduceScatter 等原理
-│   └── nccl_ops_demo.py              #   双卡实战：所有通信原语 demo
+│   └── nccl_ops_demo.py              #   双卡通信原语验证
 │
 ├── 02_ring_allreduce/                 # Ring AllReduce 深入
 │   ├── README.md                      #   Ring 算法图解
-│   ├── ring_allreduce_sim.py          #   纯 Python 模拟（理解算法）
+│   ├── ring_allreduce_sim.py          #   纯 Python 算法模拟
 │   └── ring_allreduce_nccl.py         #   真实双卡 NCCL 实现
 │
 ├── 03_ddp/                            # 分布式数据并行
@@ -81,21 +81,6 @@ Ring AllReduce：
 - 每张卡的通信量恒定为 `2M·(N-1)/N`，**与卡数 N 几乎无关**
 - 这就是 NCCL 内部实现 AllReduce 的核心算法
 
-## 学习路线
-
-### 基础通信
-1. **01_nccl_primitives/** — 先理解每个通信原语的输入输出
-2. **02_ring_allreduce/** — 深入理解 Ring AllReduce 的分步算法
-
-### 并行策略
-3. **03_ddp/** — 数据并行，最基本最常用的并行方式
-4. **04_fsdp_zero/** — ZeRO 显存优化，理解 ZeRO 1/2/3 分别切什么
-5. **05_tensor_parallel/** — 张量并行，Megatron-style 的层内切分
-6. **06_pipeline_parallel/** — 流水线并行，层间切分 + 调度优化
-
-### 工程计算
-7. **07_memory_estimation/** — 面试必考的显存估算题
-
 ## 硬件背景知识
 
 ```
@@ -104,9 +89,9 @@ GPU 间通信带宽（从快到慢）：
 NVLink 4.0 (H100)    : 900 GB/s 双向
 NVLink 3.0 (A100)    : 600 GB/s 双向
 NVLink 2.0 (V100)    : 300 GB/s 双向
-PCIe 4.0 (你的2080Ti) : ~32 GB/s 双向 ← 你的机器
+PCIe 4.0             : ~32 GB/s 双向
 PCIe 3.0             : ~16 GB/s 双向
 InfiniBand HDR       : 200 Gbps (~25 GB/s) 节点间
 ```
 
-你的 2 × 2080 Ti 通过 PCIe 互联，没有 NVLink，但完全足够理解和验证分布式通信的概念。
+2 × RTX 2080 Ti 环境通过 PCIe 互联，不支持 NVLink。

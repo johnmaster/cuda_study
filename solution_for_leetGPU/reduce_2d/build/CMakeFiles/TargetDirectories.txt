@@ -1,3 +1,0 @@
-/home/lingbok/cuda_study/solution_for_leetGPU/reduce_2d/build/CMakeFiles/reduce_2d.dir
-/home/lingbok/cuda_study/solution_for_leetGPU/reduce_2d/build/CMakeFiles/edit_cache.dir
-/home/lingbok/cuda_study/solution_for_leetGPU/reduce_2d/build/CMakeFiles/rebuild_cache.dir

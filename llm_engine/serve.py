@@ -12,7 +12,7 @@ LLM 推理引擎 CLI 入口。
     # 控制生成参数
     python serve.py --prompt "Hello world" --max-tokens 200 --temperature 0.8 --top-k 40
 
-    # 批量推理（演示 Continuous Batching 吞吐）
+    # 批量推理（Continuous Batching 吞吐）
     python serve.py --benchmark --model gpt2 --num-requests 8
 
     # 精度对比（手写引擎 vs HuggingFace 官方 pipeline）

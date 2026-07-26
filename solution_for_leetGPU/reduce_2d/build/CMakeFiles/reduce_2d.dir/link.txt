@@ -1,1 +1,0 @@
-/usr/bin/g++ @CMakeFiles/reduce_2d.dir/objects1.rsp -o reduce_2d @CMakeFiles/reduce_2d.dir/linkLibs.rsp -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda-12.4/targets/x86_64-linux/lib"

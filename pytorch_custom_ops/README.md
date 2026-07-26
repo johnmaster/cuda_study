@@ -1,13 +1,13 @@
 # PyTorch Custom Ops
 
-从零开始学习如何将 CUDA kernel 包装成 PyTorch 算子，涵盖 pybind11 绑定、autograd 集成、
-Dispatcher 机制、torch.compile 兼容性等 AI Infra 核心知识。
+本目录记录 CUDA kernel 封装为 PyTorch 算子的完整链路，涵盖 pybind11 绑定、autograd 集成、
+Dispatcher 机制和 torch.compile 兼容性。
 
 ## 项目结构
 
 ```
 pytorch_custom_ops/
-├── 01_custom_gelu/                  # 入门：elementwise 算子
+├── 01_custom_gelu/                  # elementwise 算子
 │   ├── csrc/
 │   │   ├── custom_gelu_kernel.cu    #   CUDA kernel (forward + backward)
 │   │   └── binding.cpp              #   pybind11 绑定
@@ -15,7 +15,7 @@ pytorch_custom_ops/
 │   ├── test_custom_gelu.py          #   正确性 & 性能测试
 │   └── setup.py                     #   pip install 构建
 │
-├── 02_flash_attention/              # 进阶：Flash Attention 完整 custom op
+├── 02_flash_attention/              # Flash Attention 完整 custom op
 │   ├── csrc/
 │   │   ├── flash_attn_kernel.cu     #   forward (online softmax) + backward (tile-based recomputation)
 │   │   └── binding.cpp              #   pybind11 绑定
@@ -23,7 +23,7 @@ pytorch_custom_ops/
 │   ├── test_flash_attention.py      #   正确性 / 梯度 / 性能测试
 │   └── setup.py
 │
-├── pytorch_custom_ops_guide.md      # 完整教程：从 kernel 到 torch.compile 全链路
+├── pytorch_custom_ops_guide.md      # 从 kernel 到 torch.compile 的完整链路
 └── README.md
 ```
 
@@ -43,15 +43,6 @@ python test_flash_attention.py
 ```
 
 首次运行会 JIT 编译 CUDA 扩展（约 1-2 分钟），之后自动缓存。
-
-## 学习路线
-
-| 阶段 | 内容 | 对应代码 |
-|------|------|---------|
-| **1. 基础** | 写 CUDA kernel → pybind11 绑定 → Python 调用 | `01_custom_gelu/` |
-| **2. Autograd** | `autograd.Function` + `save_for_backward` | `01_custom_gelu/custom_gelu.py` |
-| **3. 复杂算子** | tiling、online softmax、tile-based backward | `02_flash_attention/` |
-| **4. 全链路理解** | Dispatcher、torch.library、torch.compile | `pytorch_custom_ops_guide.md` |
 
 ## 核心知识点
 

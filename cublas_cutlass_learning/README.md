@@ -1,6 +1,6 @@
-# cuBLAS 学习记录
+# cuBLAS 技术笔记
 
-cuBLAS 是 NVIDIA 提供的 GPU BLAS 库，用于高性能向量和矩阵计算。它默认按 **列主序（column-major）** 解释矩阵，这是学习时最需要注意的一点。
+cuBLAS 是 NVIDIA 提供的 GPU BLAS 库，用于高性能向量和矩阵计算。传统接口默认按 **列主序（column-major）** 解释矩阵。
 
 ## 1. 基本使用流程
 
@@ -233,7 +233,7 @@ leading dimension 不是：
 - 字节数。
 - 一定等于矩阵的逻辑行数。
 
-它的单位是**元素个数**。对于没有 padding 的连续列主序矩阵，它通常恰好等于物理矩阵的行数，所以初学时容易把两者误认为永远相同。
+它的单位是**元素个数**。对于没有 padding 的连续列主序矩阵，它通常恰好等于物理矩阵的行数，但两者并不始终相等。
 
 例如一个连续存储的 `3×2` 列主序矩阵：
 
@@ -359,7 +359,7 @@ cublasStatus_t cublasGemmEx(
 - `Btype`：`B` 的存储类型。
 - `Ctype`：`C` 的存储类型。
 - `computeType`：乘加使用的计算类型，如 `CUBLAS_COMPUTE_32F` 或 `CUBLAS_COMPUTE_32F_FAST_TF32`。
-- `algo`：算法选择，入门时通常使用 `CUBLAS_GEMM_DEFAULT`。
+- `algo`：算法选择；通用默认值为 `CUBLAS_GEMM_DEFAULT`。
 
 #### `computeType`：内部到底用什么精度计算
 
@@ -507,7 +507,7 @@ cuBLASLt 的流程更适合调优：
 | 数值行为要求更严格 | 对应的 `*_PEDANTIC` | 从 `CUBLAS_GEMM_DEFAULT` 开始 |
 | 固定 shape 追求极致性能 | 先确定可接受的计算精度 | 使用 cuBLASLt heuristic 并实测候选 |
 
-最稳妥的学习顺序是：先固定 `algo=CUBLAS_GEMM_DEFAULT`，只研究存储类型和 `computeType` 对精度、性能的影响；理解这些之后，再进入 cuBLASLt 做算法搜索。
+固定 `algo=CUBLAS_GEMM_DEFAULT` 可单独比较存储类型和 `computeType` 对精度、性能的影响；cuBLASLt 则提供进一步的算法搜索能力。
 
 ## 5. 矩阵向量乘：GEMV
 
@@ -1046,18 +1046,17 @@ cublasStatus_t cublasSetMatrix(int rows, int cols, int elemSize,
 | 地址不连续的批量矩阵乘 | `cublasSgemmBatched` |
 | 固定间隔的批量矩阵乘 | `cublasSgemmStridedBatched` |
 
-## 11. 推荐学习顺序
+## 11. API 覆盖范围
 
-1. 用 `cublasSaxpy` 熟悉 handle、设备内存和标量参数。
-2. 用 `cublasSgemv` 理解列主序、步长和 leading dimension。
-3. 用 `cublasSgemm` 实现矩阵乘，并分别验证列主序和行主序输入。
-4. 学习 stream 和 CUDA event，理解异步执行与正确计时。
-5. 学习 `cublasGemmEx`、FP16/BF16/TF32 和 Tensor Core。
-6. 学习 batched GEMM，并比较不同矩阵尺寸下的性能。
+- Level 1：`cublasSaxpy` 等向量操作。
+- Level 2：`cublasSgemv` 等矩阵向量操作。
+- Level 3：`cublasSgemm`、`cublasGemmEx` 与 batched GEMM。
+- 执行控制：handle、stream、CUDA event 与异步计时。
+- 数值格式：FP32、FP16、BF16、TF32 与 Tensor Core。
 
 ## 12. 九个核心 API 详解
 
-这一节集中解释最值得优先掌握的九个 API。传统 cuBLAS 的核心对象是 `cublasHandle_t`，而 cuBLASLt 使用独立的 `cublasLtHandle_t` 和多个描述符；两套 handle 不能混用。
+本节集中说明九个核心 API。传统 cuBLAS 的核心对象是 `cublasHandle_t`，而 cuBLASLt 使用独立的 `cublasLtHandle_t` 和多个描述符；两套 handle 不能混用。
 
 ### 12.1 `cublasCreate`：创建传统 cuBLAS 上下文
 
@@ -1325,7 +1324,7 @@ if (returned == 0) {
 }
 ```
 
-heuristic 给出的是基于配置的候选，并不保证对你的实际数据和运行环境永远最快。性能敏感的固定 shape 可对多个返回候选进行 CUDA event 实测，并缓存最佳算法。
+heuristic 给出的是基于配置的候选，并不保证对实际数据和运行环境永远最快。性能敏感的固定 shape 可对多个返回候选进行 CUDA event 实测，并缓存最佳算法。
 
 ### 12.9 `cublasLtMatmul`：现代通用 Matmul 核心接口
 
@@ -1388,7 +1387,7 @@ cublasLtCreate
 
 | 场景 | 推荐接口 | 原因 |
 | --- | --- | --- |
-| 学习 GEMM、简单 FP32 矩阵乘 | `cublasSgemm` | 参数少，最容易验证 |
+| 简单 FP32 矩阵乘 | `cublasSgemm` | 参数少，结果容易验证 |
 | 简单混合精度矩阵乘 | `cublasGemmEx` | 能分别控制存储与计算类型 |
 | 大量规则间隔的小矩阵 | `cublasSgemmStridedBatched` | 不需要设备指针数组 |
 | 需要 bias/activation 融合 | `cublasLtMatmul` | 支持 epilogue |

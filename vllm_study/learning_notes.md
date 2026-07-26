@@ -1239,7 +1239,7 @@ SM register (做 matmul)
 
 ---
 
-## 复习要点
+## 核心结论
 
 1. **永远画图**：脑子里没有 `[batch, seq, hidden]` 的形状，看到代码会两眼一抹黑
 2. **永远算数**：`max(memory, compute)` + "每 step 多少 GB / TFLOPs" + 4 件套硬件参数 = 任何模型任何卡的理论下限

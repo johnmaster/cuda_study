@@ -3,7 +3,7 @@ Reduce 归约 — Triton
 
 1) sum_all:  将整个 1D（或展平）张量归约为标量
    - 每个 program 对一段 BLOCK 做 tl.sum，再用 tl.atomic_add 累加到单个输出
-   - 注意: 输出需事先清零；atomic 在极大规模时可能成为瓶颈（教学用足够）
+   - 注意: 输出需事先清零；atomic 在极大规模时可能成为瓶颈
 
 2) row_sum:  对 2D 张量 [M, N] 沿最后一维求和，得到 [M]
    - 每个 program 负责一行，内层沿 N 分块累加
