@@ -23,51 +23,12 @@
 
 ## 一、V0 vs V1 引擎的关系
 
-### 一句话总结
+**V1 是 V0 的上层架构重写版**，两者目前共存于同一仓库，并非两套完全独立的实现。
 
-**V1 是 V0 的"重写版"**，不是平行替代。共存于同一仓库里，`VLLM_USE_V1=1` 默认开启走 V1 路径，`VLLM_USE_V1=0` 切回 V0。模型/kernel 这层共用，**重写的是上层架构**：scheduler、KV cache manager、worker、sampler、API server。
-
-### 时间线
-
-- **V0**：2023 年初~2024 年底
-- **V1 Alpha 发布**：2025-01-27
-- **2025 年中起**：V1 成为默认（[envs.py:76](../vllm/envs.py#L76) `VLLM_USE_V1: bool = True`）
-
-### 仓库共存
-
-```
-vllm/
-├── core/      ← V0 调度 / KV cache
-├── engine/    ← V0 引擎 (LLMEngine, AsyncLLMEngine)
-├── worker/    ← V0 worker
-│
-└── v1/        ← V1 全套
-    ├── core/sched/
-    ├── core/
-    ├── engine/
-    ├── executor/
-    ├── worker/
-    └── sample/
-```
-
-### 关键差异
-
-| 维度 | V0 | V1 |
-|---|---|---|
-| **进程模型** | 单进程 | EngineCore 跑独立子进程，前端 ZMQ IPC |
-| **Scheduler** | prefill / decode 分阶段调度 | 统一调度（`{req_id: num_tokens}`） |
-| **Chunked Prefill** | 后加 feature flag | 默认始终开启 |
-| **Prefix Caching** | 后加 flag | 默认开 |
-| **KV Cache 管理** | `BlockManager` + `BlockSpaceManager` + `Evictor`（多层） | `KVCacheManager` + `BlockPool`（两层） |
-| **GPU↔CPU swap** | 支持 | 已弃用 |
-| **`best_of`** | 支持 | 已弃用 |
-| **CPU 开销** | 较高 | "near-zero" |
-
-### 为什么重写而不是改
-
-V0 的 chunked_prefill、prefix_caching、spec_decode、multi_modal 各自加 flag、各自打 patch，代码路径越来越乱。V1 是从头按"统一调度 + 子进程隔离"重新设计。
-
-底层共用部分（不分 V0/V1）：模型实现、attention kernels、量化、distributed primitives、tokenizer。
+- 共用：模型实现、attention kernels、量化、分布式基础组件和 tokenizer。
+- V1 重写：scheduler、KV cache manager、worker、sampler 和 API server 等上层组件。
+- 主要方向：统一 prefill/decode 调度、简化 KV cache 管理，并通过进程隔离降低 CPU 调度开销。
+- 可通过 `VLLM_USE_V1` 选择 V1 或 V0 路径。
 
 ---
 
