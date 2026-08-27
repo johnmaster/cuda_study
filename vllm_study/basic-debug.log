@@ -1,0 +1,760 @@
+DEBUG 08-27 20:36:07 [plugins/__init__.py:44] No plugins for group vllm.platform_plugins found.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:36] Checking if TPU platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:55] TPU platform is not available because: No module named 'libtpu'
+DEBUG 08-27 20:36:07 [platforms/__init__.py:61] Checking if CUDA platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:84] Confirmed CUDA platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:112] Checking if ROCm platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:126] ROCm platform is not available because: No module named 'amdsmi'
+DEBUG 08-27 20:36:07 [platforms/__init__.py:133] Checking if XPU platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:164] Checking if CPU platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:61] Checking if CUDA platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:84] Confirmed CUDA platform is available.
+DEBUG 08-27 20:36:07 [platforms/__init__.py:245] Automatically detected platform cuda.
+DEBUG 08-27 20:36:14 [plugins/__init__.py:52] Available plugins for group vllm.general_plugins:
+DEBUG 08-27 20:36:14 [plugins/__init__.py:54] - lora_filesystem_resolver -> vllm.plugins.lora_resolvers.filesystem_resolver:register_filesystem_resolver
+DEBUG 08-27 20:36:14 [plugins/__init__.py:54] - lora_hf_hub_resolver -> vllm.plugins.lora_resolvers.hf_hub_resolver:register_hf_hub_resolver
+DEBUG 08-27 20:36:14 [plugins/__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 08-27 20:36:14 [entrypoints/.../utils/api_utils.py:273] non-default args: {'disable_log_stats': True, 'model': 'facebook/opt-125m'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING 08-27 20:36:18 [engine/arg_utils.py:1631] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+DEBUG 08-27 20:36:25 [model_executor/models/registry.py:964] Loaded model info for class vllm.model_executor.models.opt.OPTForCausalLM from cache
+DEBUG 08-27 20:36:25 [logging_utils/log_time.py:29] Registry inspect model class: Elapsed time 0.0006361 secs
+INFO 08-27 20:36:25 [config/model.py:623] Resolved architecture: OPTForCausalLM
+INFO 08-27 20:36:25 [config/model.py:1788] Using max model len 2048
+DEBUG 08-27 20:36:25 [config/model.py:1853] Generative models support chunked prefill.
+DEBUG 08-27 20:36:25 [config/model.py:1908] Generative models support prefix caching.
+DEBUG 08-27 20:36:25 [engine/arg_utils.py:2527] Enabling chunked prefill by default
+DEBUG 08-27 20:36:25 [engine/arg_utils.py:2555] Enabling prefix caching by default
+DEBUG 08-27 20:36:25 [engine/arg_utils.py:2703] Defaulting max_num_batched_tokens to 8192 for LLM_CLASS usage context.
+DEBUG 08-27 20:36:25 [engine/arg_utils.py:2713] Defaulting max_num_seqs to 256 for LLM_CLASS usage context.
+INFO 08-27 20:36:25 [config/scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-27 20:36:25 [config/vllm.py:1109] Asynchronous scheduling is enabled.
+DEBUG 08-27 20:36:25 [config/kernel.py:277] Setting platform-specific IR op priority defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), user-defined: IrOpPriorityConfig(rms_norm=[], fused_add_rms_norm=[])
+INFO 08-27 20:36:25 [config/kernel.py:295] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+DEBUG 08-27 20:36:25 [utils/flashinfer.py:43] flashinfer-cubin package was not found
+DEBUG 08-27 20:36:25 [utils/flashinfer.py:58] FlashInfer unavailable since nvcc was not found and not using pre-downloaded cubins
+DEBUG 08-27 20:36:28 [tokenizers/registry.py:78] Loading CachedHfTokenizer for tokenizer_mode='hf'
+DEBUG 08-27 20:36:33 [renderers/registry.py:57] Loading HfRenderer for renderer_mode='hf'
+INFO 08-27 20:36:34 [v1/engine/core.py:116] Initializing a V1 LLM engine (v0.26.0) with config: model='facebook/opt-125m', speculative_config=None, tokenizer='facebook/opt-125m', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=2048, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=facebook/opt-125m, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': True, 'alignment_asserts': True, 'scalar_asserts': True, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+WARNING 08-27 20:36:34 [logger.py:305] VLLM_TRACE_FUNCTION is enabled. It will record every function executed by Python. This will slow down the code. It is suggested to be used for debugging hang or crashes only.
+INFO 08-27 20:36:34 [logger.py:310] Trace frame log is saved to /tmp/root/vllm/vllm-instance-1787834185698875925/VLLM_TRACE_FUNCTION_for_process_3574_thread_136132489193280_at_2026-08-27_20:36:34.827276.log
+DEBUG 08-27 20:36:35 [utils/import_utils.py:73] Loading module triton_kernels from /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/triton_kernels/__init__.py.
+DEBUG 08-27 20:36:42 [config/kernel.py:85] Setting IR op priority for rms_norm to ['native']
+DEBUG 08-27 20:36:42 [ir/op.py:422] Priority for vllm.ir.rms_norm set to ['native']
+DEBUG 08-27 20:36:42 [config/kernel.py:85] Setting IR op priority for fused_add_rms_norm to ['native']
+DEBUG 08-27 20:36:42 [ir/op.py:422] Priority for vllm.ir.fused_add_rms_norm set to ['native']
+DEBUG 08-27 20:36:42 [distributed/parallel_state.py:1571] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.122.5:37177 backend=nccl
+INFO 08-27 20:36:42 [distributed/parallel_state.py:1615] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.122.5:37177 backend=nccl
+DEBUG 08-27 20:36:42 [distributed/parallel_state.py:1697] Detected 1 nodes in the distributed environment
+INFO 08-27 20:36:43 [distributed/parallel_state.py:1946] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+INFO 08-27 20:36:43 [v1/worker/gpu_worker.py:378] Using V2 Model Runner
+DEBUG 08-27 20:36:43 [v1/worker/gpu_worker.py:390] worker init memory snapshot: torch_peak=0.0GiB, free_memory=23.25GiB, total_memory=23.64GiB, cuda_memory=0.39GiB, torch_memory=0.0GiB, non_torch_memory=0.39GiB, timestamp=1787834203.5529869, auto_measure=True
+DEBUG 08-27 20:36:43 [v1/worker/gpu_worker.py:391] worker requested memory: 21.75GiB
+DEBUG 08-27 20:36:43 [compilation/decorators.py:221] Inferred dynamic dimensions for forward method of <class 'vllm.model_executor.models.opt.OPTModel'>: ['input_ids', 'positions', 'intermediate_tensors', 'inputs_embeds']
+INFO 08-27 20:36:44 [v1/worker/gpu/model_runner.py:284] Loading model from scratch...
+DEBUG 08-27 20:37:01 [platforms/cuda.py:441] Some attention backends are not valid for cuda with AttentionSelectorConfig(head_size=64, dtype=torch.float16, kv_cache_dtype=auto, block_size=None, use_mla=False, has_sink=False, use_sparse=False, use_mm_prefix=False, use_per_head_quant_scales=False, attn_type=AttentionType.DECODER, has_sliding_window=False, use_non_causal=False, use_batch_invariant=False, use_kv_connector=False, use_pcp=False). Reasons: {TURBOQUANT: [kv_cache_dtype not supported]}.
+INFO 08-27 20:37:01 [platforms/cuda.py:482] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+INFO 08-27 20:37:01 [v1/attention/backends/flash_attn.py:776] Using FlashAttention version 2
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+DEBUG 08-27 20:37:03 [compilation/backends.py:107] Using InductorStandaloneAdaptor
+DEBUG 08-27 20:37:03 [config/model.py:1751] head dtype: torch.float16
+DEBUG 08-27 20:37:05 [config/compilation.py:1309] No custom ops found in model.
+DEBUG 08-27 20:37:05 [model_executor/model_loader/base_loader.py:63] Loading weights on cuda ...
+DEBUG 08-27 20:37:07 [model_executor/model_loader/weight_utils.py:506] Using model weights format ['*.bin']
+Loading pt checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.embed_tokens.weight with shape torch.Size([50304, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.embed_positions.weight with shape torch.Size([2050, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:09 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:10 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:10 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 20:37:11 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 20:37:11 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.final_layer_norm.bias with shape torch.Size([768])
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:03<00:00,  3.86s/it]
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:03<00:00,  3.88s/it]
+
+INFO 08-27 20:37:11 [model_executor/model_loader/default_loader.py:430] Loading weights took 3.92 seconds
+DEBUG 08-27 20:37:12 [model_executor/model_loader/base_loader.py:70] Peak GPU memory after loading weights: 0.24 GiB
+INFO 08-27 20:37:14 [v1/worker/gpu/model_runner.py:305] Model loading took 0.24 GiB and 30.286809 seconds
+INFO 08-27 20:37:14 [v1/sample/ops/topk_topp_sampler.py:39] FlashInfer top-p/top-k sampling disabled via VLLM_USE_FLASHINFER_SAMPLER=0.
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] Traced files (to be considered for compilation cache):
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/distributed/parallel_state.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/parameter.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/attention/attention.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/sparse.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/activation.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/vocab_parallel_embedding.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/normalization.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/utils.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/linear.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/models/opt.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/utils/torch_utils.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/container.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/_dynamo/polyfills/builtins.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/platforms/interface.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/distributed/communication_op.py
+DEBUG 08-27 20:38:19 [compilation/caching.py:601] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/_dynamo/polyfills/itertools.py
+DEBUG 08-27 20:38:19 [compilation/backends.py:107] Using InductorStandaloneAdaptor
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] Traced files (to be considered for compilation cache):
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/_dynamo/polyfills/builtins.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/_dynamo/polyfills/itertools.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/activation.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/container.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/normalization.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/torch/nn/modules/sparse.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/distributed/communication_op.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/distributed/parallel_state.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/attention/attention.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/linear.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/utils.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/layers/vocab_parallel_embedding.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/models/opt.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/model_executor/parameter.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/platforms/interface.py
+DEBUG 08-27 20:38:23 [compilation/backends.py:1038] /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/utils/torch_utils.py
+INFO 08-27 20:38:23 [compilation/backends.py:1094] Using cache directory: /root/.cache/vllm/torch_compile_cache/c990382831/rank_0_0/backbone for vLLM's torch.compile
+DEBUG 08-27 20:38:23 [compilation/backends.py:1105] torch.compile cache factors: env=d34f403c7a070ee05c5fe442fa1e18bb2694383ff413ad6f38289e1db894f1a0 cfg=2f58e9713b comp=81ccfc0586 code=c8add6e7d29530ebd5bf789156dc1e94f2f4012ec6eef7014af5e8fc6c21d970 dir=/root/.cache/vllm/torch_compile_cache/c990382831/rank_0_0/backbone
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116] Compile env factors (raw):
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116] {'CMAKE_BUILD_TYPE': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'CUDA_HOME': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'K_SCALE_CONSTANT': 200,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'MOONCAKE_PREFERRED_SEGMENT': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'MOONCAKE_REQUESTER_LOCAL_HOSTNAME': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'NVCC_THREADS': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'Q_SCALE_CONSTANT': 200,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_ASCEND_RT_VISIBLE_DEVICES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_CUDA_VISIBLE_DEVICES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_HABANA_VISIBLE_MODULES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_HIP_VISIBLE_DEVICES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_NEURON_RT_VISIBLE_CORES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_ONEAPI_DEVICE_SELECTOR': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_RBLN_RT_VISIBLE_DEVICES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'RAY_EXPERIMENTAL_NOSET_TPU_VISIBLE_CHIPS': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VERBOSE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLOW_CHUNKED_LOCAL_ATTN_WITH_HYBRID_KV_CACHE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLOW_INSECURE_SERIALIZATION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLOW_LONG_MAX_MODEL_LEN': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLOW_RUNTIME_LORA_UPDATING': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLREDUCE_USE_FLASHINFER': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ALLREDUCE_USE_SYMM_MEM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_API_KEY': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_BATCH_INVARIANT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_BLOCKSCALE_FP8_GEMM_FLASHINFER': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_BUILD_COMMIT': 'unknown',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_BUILD_PIPELINE': 'local',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_BUILD_URL': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_COMPILE_CACHE_SAVE_FORMAT': 'binary',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_COMPUTE_NANS_IN_LOGITS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CONFIGURE_LOGGING': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CONFIG_ROOT': '/root/.config/vllm',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CPU_ATTN_SPLIT_KV': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CPU_INT4_W4A8': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CPU_NUM_OF_RESERVED_CPU': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CPU_OMP_THREADS_BIND': 'auto',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CPU_SGL_KERNEL': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CUDART_SO_PATH': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_CUSTOM_SCOPES_FOR_PROFILING': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DBO_COMM_SMS': 20,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEBUG_MFU_METRICS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEBUG_WORKSPACE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEPLL_NVFP4_DISPATCH': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_BUFFER_SIZE_MB': 1024,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_HIGH_THROUGHPUT_FORCE_INTRA_NODE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_LOW_LATENCY_USE_MNNVL': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_V2_ALLOW_HYBRID_MODE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_V2_ALLOW_MULTIPLE_REDUCTION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEPEP_V2_PREFER_OVERLAP': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DEEP_GEMM_WARMUP': 'relax',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLED_KERNELS': (),
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLE_COMPILE_CACHE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLE_LOG_LOGO': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLE_PYNCCL': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLE_REQUEST_ID_RANDOMIZATION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISABLE_SHARED_EXPERTS_STREAM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DISTRIBUTED_USE_SPLIT_GROUP': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DOCKER_BUILD_CONTEXT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DP_RANK': 0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DP_RANK_LOCAL': 0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_DP_SIZE': 1,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_EC_SIDE_CHANNEL_HOST': 'localhost',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_EC_SIDE_CHANNEL_PORT': 5601,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ELASTIC_EP_DRAIN_REQUESTS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ELASTIC_EP_SCALE_UP_LAUNCH': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_CUDAGRAPH_GC': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_FLA_PACKED_RECURRENT_DECODE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_INDUCTOR_COORDINATE_DESCENT_TUNING': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_INDUCTOR_MAX_AUTOTUNE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_PREGRAD_PASSES': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENABLE_RESPONSES_API_STORE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENFORCE_STRICT_TOOL_CALLING': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ENGINE_READY_TIMEOUT_S': 600,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_FASTSAFETENSORS_QUEUE_SIZE': 0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_FLASHINFER_ALLREDUCE_BACKEND': 'auto',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_FLASHINFER_WORKSPACE_BUFFER_SIZE': 413138944,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_FLOAT32_MATMUL_PRECISION': 'highest',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_GC_DEBUG': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_GPT_OSS_HARMONY_SYSTEM_INSTRUCTIONS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_GPT_OSS_SYSTEM_TOOL_MCP_LABELS': (),
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_GPU_NIC_PCIE_MAPPING': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_GPU_SYNC_CHECK': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_HAS_FLASHINFER_CUBIN': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_HUMMING_INPUT_QUANT_CONFIG': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_HUMMING_MOE_GEMM_TYPE': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_HUMMING_ONLINE_QUANT_CONFIG': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_HUMMING_USE_F16_ACCUM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_IMAGE_TAG': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_KV_CACHE_LAYOUT': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_KV_EVENTS_USE_INT_BLOCK_HASHES': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LOG_BATCHSIZE_INTERVAL': -1.0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LOG_MODEL_INSPECTION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LOOPBACK_IP': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LORA_DISABLE_PDL': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LORA_ENABLE_DUAL_STREAM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LORA_RESOLVER_CACHE_DIR': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_LORA_RESOLVER_HF_REPO_LIST': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MAIN_CUDA_VERSION': '13.0',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MARLIN_INPUT_DTYPE': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MARLIN_USE_ATOMIC_ADD': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MAX_COMPLETION_PROMPTS': 1024,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MAX_N_SEQUENCES': 16384,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MAX_TOKENS_PER_EXPERT_FP4_MOE': 163840,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MLA_DISABLE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MM_HASHER_ALGORITHM': 'blake3',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOE_ROUTING_SIMULATION_STRATEGY': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOE_SKIP_PADDING': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOE_USE_DEEP_GEMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOONCAKE_ABORT_REQUEST_TIMEOUT': 480,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOONCAKE_BOOTSTRAP_PORT': 8998,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOONCAKE_DISK_STAGING_USABLE_RATIO': 0.9,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOONCAKE_LOAD_RECV_THREADS': 1,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MOONCAKE_STORE_TIER_LOG': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MQ_MAX_CHUNK_BYTES_MB': 16,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MSGPACK_ZERO_COPY_THRESHOLD': 256,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MULTI_STREAM_GEMM_TOKEN_THRESHOLD': 1024,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_MXFP8_EMULATION_DEQUANT_AT_LOAD': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NCCL_INCLUDE_PATH': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NCCL_SO_PATH': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NIC_SELECTION_VARS': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NIXL_EP_MAX_NUM_RANKS': 32,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NIXL_SIDE_CHANNEL_PORT': 5600,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_NVTX_SCOPES_FOR_PROFILING': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_P2P_SIDE_CHANNEL_HOST': 'localhost',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_P2P_SIDE_CHANNEL_PORT': 5710,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_PATTERN_MATCH_DEBUG': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_PLUGINS': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_PP_LAYER_PARTITION': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_PREFIX_CACHE_RETENTION_INTERVAL': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_PROCESS_NAME_PREFIX': 'VLLM',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_BUNDLE_INDICES': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_DP_PACK_STRATEGY': 'strict',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_DP_PLACEMENT_NODE_IPS': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_EXTRA_ENV_VARS_TO_COPY': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_EXTRA_ENV_VAR_PREFIXES_TO_COPY': '',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RAY_PER_WORKER_GPUS': 1.0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_REGEX_COMPILATION_TIMEOUT_S': 5,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_AITER_MOE_DISPATCH_POLICY': 0,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_FP8_MFMA_PAGE_ATTN': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_FP8_PADDING': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_MOE_PADDING': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_QUICK_REDUCE_CAST_BF16_TO_FP16': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_QUICK_REDUCE_MIN_SIZE_BYTES_MB': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_QUICK_REDUCE_QUANTIZATION': 'NONE',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_QUICK_REDUCE_QUANTIZATION_MIN_SIZE_KB': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_SLEEP_MEM_CHUNK_SIZE': 256,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_CUSTOM_AR': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_FP4BMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_FP4_ASM_GEMM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_FP8BMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_LINEAR': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_LINEAR_HIPBMM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_MHA': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_MLA': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_MOE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_RMSNORM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_TRITON_GEMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_TRITON_ROPE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_ROCM_USE_SKINNY_GEMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_RUST_FRONTEND_PATH': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SHARED_EXPERTS_STREAM_TOKEN_THRESHOLD': 256,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SKIP_P2P_CHECK': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SKIP_PRECOMPILED_VERSION_SUFFIX': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SPARSE_INDEXER_MAX_LOGITS_MB': 512,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SSM_CONV_STATE_LAYOUT': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_SYSTEM_START_DATE': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TARGET_DEVICE': 'cuda',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TEST_FORCE_FP8_MARLIN': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TOOL_JSON_ERROR_AUTOMATIC_RETRY': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TOOL_PARSE_REGEX_TIMEOUT_SECONDS': 1,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TPU_USING_PATHWAYS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TRACE_FUNCTION': 1,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TRITON_ATTN_USE_TD': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TRITON_FORCE_FIRST_CONFIG': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_TRITON_USE_TD': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USAGE_SOURCE': 'production',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_AOT_COMPILE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_BREAKABLE_CUDAGRAPH': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_BYTECODE_HOOK': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_DEEP_GEMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_DEEP_GEMM_E8M0': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_DEEP_GEMM_TMA_ALIGNED_SCALES': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_EXPERIMENTAL_PARSER_CONTEXT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_FASTOKENS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_FLASHINFER_MOE_INT4': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_FLASHINFER_SAMPLER': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_FUSED_MOE_GROUPED_TOPK': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_LAYERNAME': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_MEGA_AOT_ARTIFACT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_NCCL_SYMM_MEM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_OINK_OPS': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_PRECOMPILED': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_PRECOMPILED_RUST': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_RAY_COMPILED_DAG_CHANNEL_TYPE': 'auto',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_RAY_COMPILED_DAG_OVERLAP_COMM': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_RAY_V2_EXECUTOR_BACKEND': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_RAY_WRAPPED_PP_COMM': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_RUST_FRONTEND': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_SIMPLE_KV_OFFLOAD': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_SPINLOOP_EXT': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_STANDALONE_COMPILE': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_TRITON_AWQ': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_USE_V2_MODEL_RUNNER': None,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_V1_USE_OUTLINES_CACHE': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_WEIGHT_OFFLOADING_DISABLE_UVA': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_WSL2_ENABLE_PIN_MEMORY': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XGRAMMAR_CACHE_MB': 512,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XLA_CACHE_PATH': '/root/.cache/vllm/xla_cache',
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XLA_CHECK_RECOMPILATION': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XLA_USE_SPMD': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XPU_ENABLE_XPU_GRAPH': False,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'VLLM_XPU_USE_SAMPLER_KERNEL': True,
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116]  'V_SCALE_CONSTANT': 100}
+DEBUG 08-27 20:38:23 [compilation/backends.py:1116] Vllm config hash: 2f58e9713b
+INFO 08-27 20:38:23 [compilation/backends.py:1155] Dynamo bytecode transform time: 67.66 s
+DEBUG 08-27 20:38:34 [compilation/piecewise_backend.py:152] PiecewiseBackend: compile_ranges: [(1, 8192)]
+DEBUG 08-27 20:38:34 [compilation/piecewise_backend.py:156] PiecewiseBackend: compile_sizes: []
+DEBUG 08-27 20:38:34 [compilation/backends.py:254] Directly load the 0-th graph for compile range (1, 8192)from inductor_standalone via handle ('artifact_compile_range_1_8192_subgraph_0', '/root/.cache/vllm/torch_compile_cache/c990382831/rank_0_0/backbone/artifact_compile_range_1_8192_subgraph_0')
+DEBUG 08-27 20:38:35 [compilation/backends.py:254] Directly load the 1-th graph for compile range (1, 8192)from inductor_standalone via handle ('artifact_compile_range_1_8192_subgraph_1', '/root/.cache/vllm/torch_compile_cache/c990382831/rank_0_0/backbone/artifact_compile_range_1_8192_subgraph_1')
+DEBUG 08-27 20:38:35 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:35 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:35 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.5 ms
+DEBUG 08-27 20:38:39 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:39 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:39 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.3 ms
+DEBUG 08-27 20:38:43 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:43 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:43 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 8.8 ms
+DEBUG 08-27 20:38:47 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:47 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:47 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.7 ms
+DEBUG 08-27 20:38:51 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:51 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:51 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.0 ms
+DEBUG 08-27 20:38:55 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:55 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:55 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.6 ms
+DEBUG 08-27 20:38:59 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:38:59 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:38:59 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.2 ms
+DEBUG 08-27 20:39:03 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:39:03 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:39:03 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.7 ms
+DEBUG 08-27 20:39:07 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:39:07 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:39:07 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 8.7 ms
+DEBUG 08-27 20:39:11 [compilation/.../ir/inplace_functionalization.py:95] Donated input IDs: set()
+DEBUG 08-27 20:39:11 [compilation/.../ir/inplace_functionalization.py:96] VllmIRInplaceFunctionalizationPass functionalized 0 vLLM IR nodes for op(s) 
+DEBUG 08-27 20:39:11 [compilation/passes/vllm_inductor_pass.py:87] VllmIRInplaceFunctionalizationPass completed in 9.3 ms
+DEBUG 08-27 20:39:14 [compilation/backends.py:254] Directly load the 12-th graph for compile range (1, 8192)from inductor_standalone via handle ('artifact_compile_range_1_8192_subgraph_12', '/root/.cache/vllm/torch_compile_cache/c990382831/rank_0_0/backbone/artifact_compile_range_1_8192_subgraph_12')
+INFO 08-27 20:39:14 [compilation/backends.py:292] Directly load the compiled graph(s) for compile range (1, 8192) from the cache, took 39.993 s
+INFO 08-27 20:39:15 [compilation/decorators.py:311] Directly load AOT compilation from path /root/.cache/vllm/torch_compile_cache/torch_aot_compile/84468ae1ca05119af23e8052765b3c5b8724a22f53e3a9ea09e743c6740fc039/rank_0_0/model
+INFO 08-27 20:39:15 [compilation/monitor.py:53] torch.compile took 119.67 s in total
+INFO 08-27 20:39:15 [compilation/monitor.py:81] Initial profiling/warmup run took 0.67 s
+DEBUG 08-27 20:39:25 [v1/worker/gpu_worker.py:548] Initial free memory: 23.25 GiB; Requested memory: 0.920000 (util), 21.75 GiB
+DEBUG 08-27 20:39:25 [v1/worker/gpu_worker.py:554] Free memory after profiling: 22.83 GiB (total), 21.33 GiB (within requested)
+DEBUG 08-27 20:39:25 [v1/worker/gpu_worker.py:559] Memory profiling takes 130.27 seconds. Total non KV cache memory: 0.44GiB; torch peak memory increase: 0.1GiB; non-torch forward increase memory: 0.1GiB; weights memory: 0.24GiB.
+INFO 08-27 20:39:25 [v1/worker/gpu_worker.py:560] Available KV cache memory: 21.31 GiB
+INFO 08-27 20:39:25 [v1/core/kv_cache_utils.py:2177] GPU KV cache size: 620,816 tokens
+INFO 08-27 20:39:25 [v1/core/kv_cache_utils.py:2178] Maximum concurrency for 2,048 tokens per request: 303.13x
+WARNING 08-27 20:39:25 [utils/import_utils.py:408] Module vllm.third_party.deep_gemm was found but failed to import
+WARNING 08-27 20:39:25 [utils/import_utils.py:408] Traceback (most recent call last):
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/utils/import_utils.py", line 406, in _has_module
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]     importlib.import_module(module_name)
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/deep_gemm/__init__.py", line 123, in <module>
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]     _find_cuda_home()                           # CUDA home
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]     ^^^^^^^^^^^^^^^^^
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/deep_gemm/__init__.py", line 117, in _find_cuda_home
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]     assert cuda_home is not None
+WARNING 08-27 20:39:25 [utils/import_utils.py:408]            ^^^^^^^^^^^^^^^^^^^^^
+WARNING 08-27 20:39:25 [utils/import_utils.py:408] AssertionError
+INFO 08-27 20:39:25 [model_executor/warmup/cutedsl_warmup.py:101] Skipping CuTeDSL warmup because no compile units were requested.
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]DEBUG 08-27 20:39:26 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=512, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:26 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=512, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:26,  1.90it/s]DEBUG 08-27 20:39:26 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=496, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:26 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=496, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:01<00:25,  1.91it/s]DEBUG 08-27 20:39:27 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=480, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:27 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=480, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:01<00:25,  1.89it/s]DEBUG 08-27 20:39:27 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=464, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:27 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=464, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:02<00:24,  1.91it/s]DEBUG 08-27 20:39:28 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=448, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:28 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=448, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:02<00:23,  1.92it/s]DEBUG 08-27 20:39:28 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=432, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:28 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=432, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:03<00:23,  1.92it/s]DEBUG 08-27 20:39:29 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=416, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:29 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=416, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:03<00:23,  1.91it/s]DEBUG 08-27 20:39:30 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=400, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:30 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=400, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:04<00:22,  1.91it/s]DEBUG 08-27 20:39:30 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=384, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:30 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=384, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  18%|█▊        | 9/51 [00:04<00:21,  1.91it/s]DEBUG 08-27 20:39:31 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=368, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:31 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=368, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:05<00:21,  1.87it/s]DEBUG 08-27 20:39:31 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=352, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:31 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=352, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 11/51 [00:05<00:21,  1.87it/s]DEBUG 08-27 20:39:32 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=336, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:32 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=336, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:06<00:20,  1.86it/s]DEBUG 08-27 20:39:32 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=320, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:32 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=320, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 13/51 [00:06<00:20,  1.87it/s]DEBUG 08-27 20:39:33 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=304, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:33 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=304, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:07<00:20,  1.84it/s]DEBUG 08-27 20:39:33 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=288, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:33 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=288, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 15/51 [00:07<00:19,  1.85it/s]DEBUG 08-27 20:39:34 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=272, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:34 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=272, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:08<00:19,  1.83it/s]DEBUG 08-27 20:39:34 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=256, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:34 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=256, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 17/51 [00:09<00:18,  1.83it/s]DEBUG 08-27 20:39:35 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=248, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:35 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=248, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:09<00:17,  1.84it/s]DEBUG 08-27 20:39:35 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=240, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:35 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=240, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 19/51 [00:10<00:17,  1.85it/s]DEBUG 08-27 20:39:36 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=232, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:36 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=232, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:10<00:16,  1.85it/s]DEBUG 08-27 20:39:37 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=224, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:37 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=224, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  41%|████      | 21/51 [00:11<00:16,  1.84it/s]DEBUG 08-27 20:39:37 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=216, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:37 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=216, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:11<00:15,  1.85it/s]DEBUG 08-27 20:39:38 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=208, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:38 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=208, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  45%|████▌     | 23/51 [00:12<00:15,  1.83it/s]DEBUG 08-27 20:39:38 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=200, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:38 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=200, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:12<00:14,  1.84it/s]DEBUG 08-27 20:39:39 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=192, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:39 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=192, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  49%|████▉     | 25/51 [00:13<00:14,  1.83it/s]DEBUG 08-27 20:39:39 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=184, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:39 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=184, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:13<00:13,  1.84it/s]DEBUG 08-27 20:39:40 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=176, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:40 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=176, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 27/51 [00:14<00:12,  1.85it/s]DEBUG 08-27 20:39:40 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=168, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:40 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=168, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:15<00:12,  1.87it/s]DEBUG 08-27 20:39:41 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=160, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:41 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=160, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 29/51 [00:15<00:11,  1.90it/s]DEBUG 08-27 20:39:41 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=152, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:41 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=152, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:16<00:11,  1.90it/s]DEBUG 08-27 20:39:42 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=144, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:42 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=144, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  61%|██████    | 31/51 [00:16<00:10,  1.92it/s]DEBUG 08-27 20:39:42 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=136, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:42 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=136, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:17<00:09,  1.92it/s]DEBUG 08-27 20:39:43 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=128, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:43 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=128, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  65%|██████▍   | 33/51 [00:17<00:09,  1.94it/s]DEBUG 08-27 20:39:43 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=120, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:43 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=120, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:18<00:08,  1.94it/s]DEBUG 08-27 20:39:44 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=112, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:44 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=112, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 35/51 [00:18<00:08,  1.93it/s]DEBUG 08-27 20:39:44 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=104, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:44 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=104, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:19<00:07,  1.93it/s]DEBUG 08-27 20:39:45 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=96, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:45 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=96, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  73%|███████▎  | 37/51 [00:19<00:07,  1.96it/s]DEBUG 08-27 20:39:45 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=88, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:45 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=88, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:20<00:06,  2.00it/s]DEBUG 08-27 20:39:46 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=80, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:46 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=80, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  76%|███████▋  | 39/51 [00:20<00:05,  2.03it/s]DEBUG 08-27 20:39:46 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=72, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:46 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=72, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:21<00:05,  2.06it/s]DEBUG 08-27 20:39:47 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=64, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:47 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=64, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  80%|████████  | 41/51 [00:21<00:04,  2.03it/s]DEBUG 08-27 20:39:47 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=56, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:47 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=56, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:22<00:04,  2.02it/s]DEBUG 08-27 20:39:48 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=48, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:48 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=48, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 43/51 [00:22<00:04,  1.94it/s]DEBUG 08-27 20:39:48 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=40, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:48 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=40, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:23<00:03,  1.92it/s]DEBUG 08-27 20:39:49 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=32, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:49 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=32, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  88%|████████▊ | 45/51 [00:23<00:03,  1.92it/s]DEBUG 08-27 20:39:49 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=24, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:50 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=24, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:24<00:02,  1.93it/s]DEBUG 08-27 20:39:50 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=16, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:50 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=16, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 47/51 [00:24<00:02,  1.95it/s]DEBUG 08-27 20:39:51 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=8, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:51 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=8, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:25<00:01,  1.95it/s]DEBUG 08-27 20:39:51 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=4, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:51 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=4, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 49/51 [00:25<00:01,  1.97it/s]DEBUG 08-27 20:39:52 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=2, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:52 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=2, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:26<00:00,  1.98it/s]DEBUG 08-27 20:39:52 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=PIECEWISE, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.PIECEWISE: 1>, num_tokens=1, num_reqs=None, uniform_token_count=None, num_active_loras=0)
+DEBUG 08-27 20:39:52 [compilation/cuda_graph.py:271] Capturing a cudagraph on (PIECEWISE,BatchDescriptor(num_tokens=1, num_reqs=None, uniform=False, has_lora=False, num_active_loras=0))
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:26<00:00,  1.94it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:26<00:00,  1.91it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]DEBUG 08-27 20:39:53 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=256, num_reqs=256, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):   3%|▎         | 1/35 [00:00<00:15,  2.23it/s]DEBUG 08-27 20:39:53 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=248, num_reqs=248, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:14,  2.23it/s]DEBUG 08-27 20:39:54 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=240, num_reqs=240, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):   9%|▊         | 3/35 [00:01<00:14,  2.25it/s]DEBUG 08-27 20:39:54 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=232, num_reqs=232, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:01<00:13,  2.26it/s]DEBUG 08-27 20:39:54 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=224, num_reqs=224, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  14%|█▍        | 5/35 [00:02<00:13,  2.27it/s]DEBUG 08-27 20:39:55 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=216, num_reqs=216, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:02<00:12,  2.28it/s]DEBUG 08-27 20:39:55 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=208, num_reqs=208, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  20%|██        | 7/35 [00:03<00:12,  2.29it/s]DEBUG 08-27 20:39:56 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=200, num_reqs=200, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:03<00:11,  2.32it/s]DEBUG 08-27 20:39:56 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=192, num_reqs=192, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  26%|██▌       | 9/35 [00:03<00:11,  2.31it/s]DEBUG 08-27 20:39:57 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=184, num_reqs=184, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  29%|██▊       | 10/35 [00:04<00:10,  2.32it/s]DEBUG 08-27 20:39:57 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=176, num_reqs=176, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  31%|███▏      | 11/35 [00:04<00:10,  2.32it/s]DEBUG 08-27 20:39:57 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=168, num_reqs=168, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  34%|███▍      | 12/35 [00:05<00:09,  2.34it/s]DEBUG 08-27 20:39:58 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=160, num_reqs=160, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  37%|███▋      | 13/35 [00:05<00:09,  2.35it/s]DEBUG 08-27 20:39:58 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=152, num_reqs=152, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  40%|████      | 14/35 [00:06<00:08,  2.38it/s]DEBUG 08-27 20:39:59 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=144, num_reqs=144, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  43%|████▎     | 15/35 [00:06<00:08,  2.41it/s]DEBUG 08-27 20:39:59 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=136, num_reqs=136, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  46%|████▌     | 16/35 [00:06<00:07,  2.41it/s]DEBUG 08-27 20:40:00 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=128, num_reqs=128, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  49%|████▊     | 17/35 [00:07<00:07,  2.41it/s]DEBUG 08-27 20:40:00 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=120, num_reqs=120, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  51%|█████▏    | 18/35 [00:07<00:07,  2.37it/s]DEBUG 08-27 20:40:00 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=112, num_reqs=112, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  54%|█████▍    | 19/35 [00:08<00:06,  2.38it/s]DEBUG 08-27 20:40:01 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=104, num_reqs=104, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  57%|█████▋    | 20/35 [00:08<00:06,  2.43it/s]DEBUG 08-27 20:40:01 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=96, num_reqs=96, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  60%|██████    | 21/35 [00:08<00:05,  2.46it/s]DEBUG 08-27 20:40:02 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=88, num_reqs=88, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  63%|██████▎   | 22/35 [00:09<00:05,  2.48it/s]DEBUG 08-27 20:40:02 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=80, num_reqs=80, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  66%|██████▌   | 23/35 [00:09<00:04,  2.49it/s]DEBUG 08-27 20:40:02 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=72, num_reqs=72, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  69%|██████▊   | 24/35 [00:10<00:04,  2.47it/s]DEBUG 08-27 20:40:03 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=64, num_reqs=64, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  71%|███████▏  | 25/35 [00:10<00:04,  2.47it/s]DEBUG 08-27 20:40:03 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=56, num_reqs=56, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  74%|███████▍  | 26/35 [00:10<00:03,  2.48it/s]DEBUG 08-27 20:40:04 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=48, num_reqs=48, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  77%|███████▋  | 27/35 [00:11<00:03,  2.51it/s]DEBUG 08-27 20:40:04 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=40, num_reqs=40, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  80%|████████  | 28/35 [00:11<00:02,  2.51it/s]DEBUG 08-27 20:40:04 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=32, num_reqs=32, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  83%|████████▎ | 29/35 [00:12<00:02,  2.52it/s]DEBUG 08-27 20:40:05 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=24, num_reqs=24, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  86%|████████▌ | 30/35 [00:12<00:01,  2.55it/s]DEBUG 08-27 20:40:05 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=16, num_reqs=16, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  89%|████████▊ | 31/35 [00:12<00:01,  2.56it/s]DEBUG 08-27 20:40:06 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=8, num_reqs=8, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  91%|█████████▏| 32/35 [00:13<00:01,  2.56it/s]DEBUG 08-27 20:40:06 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=4, num_reqs=4, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  94%|█████████▍| 33/35 [00:13<00:00,  2.56it/s]DEBUG 08-27 20:40:06 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=2, num_reqs=2, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL):  97%|█████████▋| 34/35 [00:14<00:00,  2.56it/s]DEBUG 08-27 20:40:07 [v1/worker/gpu/cudagraph_utils.py:328] CG Capture: mode=FULL, batch_desc=BatchExecutionDescriptor(cg_mode=<CUDAGraphMode.FULL: 2>, num_tokens=1, num_reqs=1, uniform_token_count=1, num_active_loras=0)
+Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:14<00:00,  2.55it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:14<00:00,  2.42it/s]
+INFO 08-27 20:40:07 [v1/worker/gpu/model_runner.py:747] Graph capturing finished in 42 secs, took 0.21 GiB
+INFO 08-27 20:40:07 [v1/worker/gpu_worker.py:857] Free memory on device (23.25/23.64 GiB) on startup. Desired GPU memory utilization is (0.92, 21.75 GiB). Actual usage is 0.24 GiB for weight, 0.1 GiB for peak activation, 0.1 GiB for non-torch memory, and 0.21 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=22497961165` (20.95 GiB) to fit into requested memory, or `--kv-cache-memory=24107735040` (22.45 GiB) to fully utilize gpu memory. Current kv cache memory in use is 21.31 GiB.
+INFO 08-27 20:42:51 [utils/jit_monitor.py:79] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+DEBUG 08-27 20:42:51 [utils/gc_utils.py:40] GC Debug Config. enabled:False,top_objects:-1
+INFO 08-27 20:42:51 [v1/engine/core.py:340] init engine (profile, create kv cache, warmup model) took 337.20 s (compilation: 119.67 s)
+DEBUG 08-27 20:42:51 [v1/engine/core.py:204] Batch queue is enabled with size 2
+DEBUG 08-27 20:42:51 [utils/gc_utils.py:40] GC Debug Config. enabled:False,top_objects:-1
+Rendering prompts:   0%|          | 0/4 [00:00<?, ?it/s]DEBUG 08-27 20:42:51 [v1/sample/logits_processor/__init__.py:63] No logitsprocs plugins installed (group vllm.logits_processors).
+Rendering prompts: 100%|██████████| 4/4 [00:00<00:00, 36.75it/s]Rendering prompts: 100%|██████████| 4/4 [00:00<00:00, 32.60it/s]
+Processed prompts:   0%|          | 0/4 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts:  25%|██▌       | 1/4 [00:01<00:05,  1.81s/it, est. speed input: 3.31 toks/s, output: 8.83 toks/s]Processed prompts: 100%|██████████| 4/4 [00:01<00:00,  1.81s/it, est. speed input: 14.18 toks/s, output: 34.88 toks/s]Processed prompts: 100%|██████████| 4/4 [00:01<00:00,  2.16it/s, est. speed input: 14.18 toks/s, output: 34.88 toks/s]
+
+Generated Outputs:
+------------------------------------------------------------
+Prompt:    'Hello, my name is'
+Output:    " my birthday in October. I'm 25. I'm very fortunate to have a"
+------------------------------------------------------------
+Prompt:    'The president of the United States is'
+Output:    ' looking to change the rules for the travel industry, taking steps that will transform the'
+------------------------------------------------------------
+Prompt:    'The capital of France is'
+Output:    ' moving rapidly towards the French presidential election. Its capital was bombed twice by an Islamic'
+------------------------------------------------------------
+Prompt:    'The future of AI is'
+Output:    ' being hazed by a pandemic\nA new study suggests that the rise of'
+------------------------------------------------------------
+[rank0]:[W827 20:42:54.994463662 ProcessGroupNCCL.cpp:1575] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

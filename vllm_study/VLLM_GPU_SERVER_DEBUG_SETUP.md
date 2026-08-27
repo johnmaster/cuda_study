@@ -179,6 +179,75 @@ VLLM_USE_FLASHINFER_SAMPLER=0 \
 /root/vllm/examples/basic/offline_inference/basic.py
 ```
 
+需要更多运行日志时，增加：
+
+```bash
+VLLM_LOGGING_LEVEL=DEBUG
+```
+
+例如：
+
+```bash
+VLLM_LOGGING_LEVEL=DEBUG \
+VLLM_ENABLE_V1_MULTIPROCESSING=0 \
+VLLM_USE_FLASHINFER_SAMPLER=0 \
+/root/vllm-run/.venv-v026-cu129/bin/python \
+/root/vllm/examples/basic/offline_inference/basic.py
+```
+
+如果还需要查看 Engine 的周期性运行统计，在创建 `LLM` 时设置：
+
+```python
+llm = LLM(
+    model="facebook/opt-125m",
+    disable_log_stats=False,
+)
+```
+
+`disable_log_stats=False` 不是环境变量，而是 `LLM(...)` 的参数。它启用的
+是吞吐量、运行及等待请求数、GPU KV Cache 使用率和 prefix cache 命中率等
+统计，例如：
+
+```text
+Avg prompt throughput: 123.4 tokens/s
+Avg generation throughput: 45.6 tokens/s
+Running: 1 reqs, Waiting: 0 reqs
+GPU KV cache usage: 2.3%
+Prefix cache hit rate: 75.0%
+```
+
+它与 `VLLM_LOGGING_LEVEL=DEBUG` 控制的内容不同：前者决定是否收集并输出
+Engine 统计，后者决定现有的 DEBUG 级别日志是否显示。研究 Scheduler、KV
+Cache 或 automatic prefix caching 时可以同时启用。短 example 可能在统计
+周期触发前就执行完毕，因此即使设置为 `False`，也不保证一定出现周期统计行。
+
+需要记录 vLLM Python 函数调用时，还可以增加：
+
+```bash
+VLLM_TRACE_FUNCTION=1
+```
+
+它会生成大量函数调用记录，并显著降低运行速度，只建议用于排查调用路径、
+卡死或崩溃。日志通常保存在 `/tmp/root/vllm/vllm-instance-*/`。日常调试优先
+只使用 `VLLM_LOGGING_LEVEL=DEBUG`。
+
+同时开启 DEBUG 日志和函数调用追踪，并将终端输出保存到文件：
+
+```bash
+cd /root/vllm-run
+
+VLLM_LOGGING_LEVEL=DEBUG \
+VLLM_TRACE_FUNCTION=1 \
+VLLM_ENABLE_V1_MULTIPROCESSING=0 \
+VLLM_USE_FLASHINFER_SAMPLER=0 \
+/root/vllm-run/.venv-v026-cu129/bin/python \
+/root/vllm/examples/basic/offline_inference/basic.py \
+2>&1 | tee /root/vllm-run/basic-trace.log
+```
+
+`tee` 保存的是终端中的 vLLM 日志；逐函数 trace 仍会单独写入
+`/tmp/root/vllm/vllm-instance-*/VLLM_TRACE_FUNCTION_*.log`。
+
 第一次运行会下载 `facebook/opt-125m`。模型默认保存在：
 
 ```text

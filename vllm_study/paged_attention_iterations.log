@@ -1,0 +1,456 @@
+DEBUG 08-27 23:03:01 [plugins/__init__.py:44] No plugins for group vllm.platform_plugins found.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:36] Checking if TPU platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:55] TPU platform is not available because: No module named 'libtpu'
+DEBUG 08-27 23:03:01 [platforms/__init__.py:61] Checking if CUDA platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:84] Confirmed CUDA platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:112] Checking if ROCm platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:126] ROCm platform is not available because: No module named 'amdsmi'
+DEBUG 08-27 23:03:01 [platforms/__init__.py:133] Checking if XPU platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:164] Checking if CPU platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:61] Checking if CUDA platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:84] Confirmed CUDA platform is available.
+DEBUG 08-27 23:03:01 [platforms/__init__.py:245] Automatically detected platform cuda.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+DEBUG 08-27 23:03:17 [plugins/__init__.py:52] Available plugins for group vllm.general_plugins:
+DEBUG 08-27 23:03:17 [plugins/__init__.py:54] - lora_filesystem_resolver -> vllm.plugins.lora_resolvers.filesystem_resolver:register_filesystem_resolver
+DEBUG 08-27 23:03:17 [plugins/__init__.py:54] - lora_hf_hub_resolver -> vllm.plugins.lora_resolvers.hf_hub_resolver:register_hf_hub_resolver
+DEBUG 08-27 23:03:17 [plugins/__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 08-27 23:03:17 [entrypoints/.../utils/api_utils.py:273] non-default args: {'max_model_len': 2048, 'block_size': 16, 'gpu_memory_utilization': 0.4, 'max_num_seqs': 4, 'enforce_eager': True, 'enable_logging_iteration_details': True, 'model': 'facebook/opt-125m'}
+WARNING 08-27 23:03:18 [engine/arg_utils.py:1631] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+ERROR 08-27 23:04:24 [transformers_utils/repo_utils.py:68] Error retrieving file list: Server disconnected without sending a response., retrying 1 of 2
+DEBUG 08-27 23:04:32 [model_executor/models/registry.py:964] Loaded model info for class vllm.model_executor.models.opt.OPTForCausalLM from cache
+DEBUG 08-27 23:04:32 [logging_utils/log_time.py:29] Registry inspect model class: Elapsed time 0.0008861 secs
+INFO 08-27 23:04:32 [config/model.py:623] Resolved architecture: OPTForCausalLM
+INFO 08-27 23:04:32 [config/model.py:1788] Using max model len 2048
+DEBUG 08-27 23:04:32 [config/model.py:1853] Generative models support chunked prefill.
+DEBUG 08-27 23:04:32 [config/model.py:1908] Generative models support prefix caching.
+DEBUG 08-27 23:04:32 [engine/arg_utils.py:2527] Enabling chunked prefill by default
+DEBUG 08-27 23:04:32 [engine/arg_utils.py:2555] Enabling prefix caching by default
+DEBUG 08-27 23:04:32 [engine/arg_utils.py:2703] Defaulting max_num_batched_tokens to 8192 for LLM_CLASS usage context.
+INFO 08-27 23:04:32 [config/scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-27 23:04:32 [config/vllm.py:1109] Asynchronous scheduling is enabled.
+WARNING 08-27 23:04:32 [config/vllm.py:1163] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 08-27 23:04:32 [config/vllm.py:1213] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+DEBUG 08-27 23:04:32 [config/kernel.py:277] Setting platform-specific IR op priority defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), user-defined: IrOpPriorityConfig(rms_norm=[], fused_add_rms_norm=[])
+INFO 08-27 23:04:32 [config/kernel.py:295] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+DEBUG 08-27 23:04:33 [utils/flashinfer.py:43] flashinfer-cubin package was not found
+DEBUG 08-27 23:04:33 [utils/flashinfer.py:58] FlashInfer unavailable since nvcc was not found and not using pre-downloaded cubins
+INFO 08-27 23:04:33 [config/vllm.py:1392] Cudagraph is disabled under eager mode
+INFO 08-27 23:04:33 [config/compilation.py:329] Enabled custom fusions: norm_quant, act_quant
+DEBUG 08-27 23:04:36 [tokenizers/registry.py:78] Loading CachedHfTokenizer for tokenizer_mode='hf'
+DEBUG 08-27 23:04:40 [renderers/registry.py:57] Loading HfRenderer for renderer_mode='hf'
+INFO 08-27 23:04:42 [v1/engine/core.py:116] Initializing a V1 LLM engine (v0.26.0) with config: model='facebook/opt-125m', speculative_config=None, tokenizer='facebook/opt-125m', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=2048, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=True, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=facebook/opt-125m, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': True, 'alignment_asserts': True, 'scalar_asserts': True, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', linear_backend='auto')
+DEBUG 08-27 23:04:42 [utils/import_utils.py:73] Loading module triton_kernels from /root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/triton_kernels/__init__.py.
+DEBUG 08-27 23:04:42 [config/kernel.py:85] Setting IR op priority for rms_norm to ['vllm_c', 'native']
+DEBUG 08-27 23:04:42 [ir/op.py:422] Priority for vllm.ir.rms_norm set to ['vllm_c', 'native']
+DEBUG 08-27 23:04:42 [config/kernel.py:85] Setting IR op priority for fused_add_rms_norm to ['vllm_c', 'native']
+DEBUG 08-27 23:04:42 [ir/op.py:422] Priority for vllm.ir.fused_add_rms_norm set to ['vllm_c', 'native']
+DEBUG 08-27 23:04:42 [distributed/parallel_state.py:1571] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.122.5:54827 backend=nccl
+INFO 08-27 23:04:42 [distributed/parallel_state.py:1615] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://192.168.122.5:54827 backend=nccl
+DEBUG 08-27 23:04:42 [distributed/parallel_state.py:1697] Detected 1 nodes in the distributed environment
+INFO 08-27 23:04:42 [distributed/parallel_state.py:1946] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+INFO 08-27 23:04:42 [v1/worker/gpu_worker.py:378] Using V2 Model Runner
+DEBUG 08-27 23:04:43 [v1/worker/gpu_worker.py:390] worker init memory snapshot: torch_peak=0.0GiB, free_memory=23.25GiB, total_memory=23.64GiB, cuda_memory=0.39GiB, torch_memory=0.0GiB, non_torch_memory=0.39GiB, timestamp=1787843083.3805048, auto_measure=True
+DEBUG 08-27 23:04:43 [v1/worker/gpu_worker.py:391] worker requested memory: 9.46GiB
+DEBUG 08-27 23:04:43 [compilation/decorators.py:221] Inferred dynamic dimensions for forward method of <class 'vllm.model_executor.models.opt.OPTModel'>: ['input_ids', 'positions', 'intermediate_tensors', 'inputs_embeds']
+INFO 08-27 23:04:43 [v1/worker/gpu/model_runner.py:284] Loading model from scratch...
+DEBUG 08-27 23:04:44 [platforms/cuda.py:441] Some attention backends are not valid for cuda with AttentionSelectorConfig(head_size=64, dtype=torch.float16, kv_cache_dtype=auto, block_size=16, use_mla=False, has_sink=False, use_sparse=False, use_mm_prefix=False, use_per_head_quant_scales=False, attn_type=AttentionType.DECODER, has_sliding_window=False, use_non_causal=False, use_batch_invariant=False, use_kv_connector=False, use_pcp=False). Reasons: {TURBOQUANT: [kv_cache_dtype not supported]}.
+INFO 08-27 23:04:44 [platforms/cuda.py:482] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+INFO 08-27 23:04:44 [v1/attention/backends/flash_attn.py:776] Using FlashAttention version 2
+DEBUG 08-27 23:04:44 [config/model.py:1751] head dtype: torch.float16
+DEBUG 08-27 23:04:44 [config/compilation.py:1309] No custom ops found in model.
+DEBUG 08-27 23:04:44 [model_executor/model_loader/base_loader.py:63] Loading weights on cuda ...
+DEBUG 08-27 23:04:46 [model_executor/model_loader/weight_utils.py:506] Using model weights format ['*.bin']
+INFO 08-27 23:04:47 [model_executor/model_loader/weight_utils.py:530] Time spent downloading weights for facebook/opt-125m: 0.990456 seconds
+Loading pt checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.embed_tokens.weight with shape torch.Size([50304, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.embed_positions.weight with shape torch.Size([2050, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.0.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.0.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.0.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.1.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.1.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.1.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.2.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.2.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.2.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.3.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.3.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.3.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.4.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.4.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.4.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.5.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.5.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.5.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.6.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.6.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.6.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.7.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.7.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.7.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.8.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.8.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.8.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.9.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.9.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.9.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.10.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.10.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.10.final_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard k with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard v with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768, 768]) into model.decoder.layers.11.self_attn.qkv_proj.weight
+DEBUG 08-27 23:04:47 [model_executor/layers/linear.py:1346] Loaded shard q with shape torch.Size([768]) into model.decoder.layers.11.self_attn.qkv_proj.bias
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn.out_proj.weight with shape torch.Size([768, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn.out_proj.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.self_attn_layer_norm.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc1.weight with shape torch.Size([3072, 768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc1.bias with shape torch.Size([3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc2.weight with shape torch.Size([768, 3072])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.fc2.bias with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.final_layer_norm.weight with shape torch.Size([768])
+DEBUG 08-27 23:04:47 [model_executor/models/utils.py:283] Loaded weight model.decoder.layers.11.final_layer_norm.bias with shape torch.Size([768])
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  3.69it/s]
+Loading pt checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  3.69it/s]
+
+INFO 08-27 23:04:48 [model_executor/model_loader/default_loader.py:430] Loading weights took 0.28 seconds
+DEBUG 08-27 23:04:48 [model_executor/model_loader/base_loader.py:70] Peak GPU memory after loading weights: 0.24 GiB
+INFO 08-27 23:04:48 [v1/worker/gpu/model_runner.py:305] Model loading took 0.24 GiB and 5.251566 seconds
+INFO 08-27 23:04:48 [v1/sample/ops/topk_topp_sampler.py:39] FlashInfer top-p/top-k sampling disabled via VLLM_USE_FLASHINFER_SAMPLER=0.
+DEBUG 08-27 23:04:50 [v1/worker/gpu_worker.py:548] Initial free memory: 23.25 GiB; Requested memory: 0.400000 (util), 9.46 GiB
+DEBUG 08-27 23:04:50 [v1/worker/gpu_worker.py:554] Free memory after profiling: 22.88 GiB (total), 9.09 GiB (within requested)
+DEBUG 08-27 23:04:50 [v1/worker/gpu_worker.py:559] Memory profiling takes 1.40 seconds. Total non KV cache memory: 0.48GiB; torch peak memory increase: 0.15GiB; non-torch forward increase memory: 0.1GiB; weights memory: 0.24GiB.
+INFO 08-27 23:04:50 [v1/worker/gpu_worker.py:560] Available KV cache memory: 8.97 GiB
+INFO 08-27 23:04:50 [v1/core/kv_cache_utils.py:2177] GPU KV cache size: 261,344 tokens
+INFO 08-27 23:04:50 [v1/core/kv_cache_utils.py:2178] Maximum concurrency for 2,048 tokens per request: 127.61x
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+WARNING 08-27 23:04:50 [utils/import_utils.py:408] Module vllm.third_party.deep_gemm was found but failed to import
+WARNING 08-27 23:04:50 [utils/import_utils.py:408] Traceback (most recent call last):
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/utils/import_utils.py", line 406, in _has_module
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]     importlib.import_module(module_name)
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "/root/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/deep_gemm/__init__.py", line 123, in <module>
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]     _find_cuda_home()                           # CUDA home
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]     ^^^^^^^^^^^^^^^^^
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]   File "/root/vllm-run/.venv-v026-cu129/lib/python3.12/site-packages/vllm/third_party/deep_gemm/__init__.py", line 117, in _find_cuda_home
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]     assert cuda_home is not None
+WARNING 08-27 23:04:50 [utils/import_utils.py:408]            ^^^^^^^^^^^^^^^^^^^^^
+WARNING 08-27 23:04:50 [utils/import_utils.py:408] AssertionError
+INFO 08-27 23:04:50 [model_executor/warmup/cutedsl_warmup.py:101] Skipping CuTeDSL warmup because no compile units were requested.
+INFO 08-27 23:04:50 [v1/worker/gpu_worker.py:857] Free memory on device (23.25/23.64 GiB) on startup. Desired GPU memory utilization is (0.4, 9.46 GiB). Actual usage is 0.24 GiB for weight, 0.15 GiB for peak activation, 0.1 GiB for non-torch memory, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=9477415424` (8.83 GiB) to fit into requested memory, or `--kv-cache-memory=24288092672` (22.62 GiB) to fully utilize gpu memory. Current kv cache memory in use is 8.97 GiB.
+INFO 08-27 23:04:51 [utils/jit_monitor.py:79] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+DEBUG 08-27 23:04:52 [utils/gc_utils.py:40] GC Debug Config. enabled:False,top_objects:-1
+INFO 08-27 23:04:52 [v1/engine/core.py:347] init engine (profile, create kv cache, warmup model) took 3.38 s
+DEBUG 08-27 23:04:52 [v1/engine/core.py:204] Batch queue is enabled with size 2
+DEBUG 08-27 23:04:52 [utils/gc_utils.py:40] GC Debug Config. enabled:False,top_objects:-1
+DEBUG 08-27 23:04:52 [v1/metrics/loggers.py:324] Engine 000: vllm cache_config_info with initialization after num_gpu_blocks is: 16334
+Rendering prompts:   0%|          | 0/4 [00:00<?, ?it/s]DEBUG 08-27 23:04:52 [v1/sample/logits_processor/__init__.py:63] No logitsprocs plugins installed (group vllm.logits_processors).
+Rendering prompts: 100%|██████████| 4/4 [00:00<00:00, 278.96it/s]
+Processed prompts:   0%|          | 0/4 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(0): 4 context requests, 1920 context tokens, 0 generation requests, 0 generation tokens, iteration elapsed time: 0.08 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(1): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(2): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(3): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(4): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(5): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(6): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(7): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(8): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(9): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(10): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(11): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(12): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(13): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(14): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.07 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(15): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(16): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(17): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.08 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(18): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(19): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(20): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(21): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(22): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(23): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(24): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(25): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(26): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(27): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(28): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(29): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(30): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(31): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.07 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(32): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(33): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(34): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(35): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(36): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(37): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(38): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(39): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(40): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(41): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(42): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(43): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(44): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(45): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(46): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(47): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(48): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(49): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(50): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(51): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(52): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(53): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(54): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(55): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(56): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(57): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(58): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(59): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(60): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.06 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(61): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(62): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(63): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.8%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(64): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(65): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(66): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(67): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(68): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(69): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(70): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(71): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(72): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(73): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(74): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(75): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(76): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(77): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(78): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(79): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(80): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(81): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(82): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(83): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(84): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(85): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(86): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(87): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(88): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(89): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(90): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(91): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(92): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(93): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:52 [v1/metrics/loggers.py:182] Engine 000: Iteration(94): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(95): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(96): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(97): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(98): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(99): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(100): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(101): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(102): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(103): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(104): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(105): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(106): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(107): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(108): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(109): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(110): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(111): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(112): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(113): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(114): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(115): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(116): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(117): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.11 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(118): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(119): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(120): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.05 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(121): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(122): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(123): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(124): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(125): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(126): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.9%
+INFO 08-27 23:04:53 [v1/metrics/loggers.py:182] Engine 000: Iteration(127): 0 context requests, 0 context tokens, 4 generation requests, 4 generation tokens, iteration elapsed time: 0.04 ms, GPU KV cache usage: 0.0%
+Processed prompts:  25%|██▌       | 1/4 [00:01<00:03,  1.10s/it, est. speed input: 115.98 toks/s, output: 115.98 toks/s]Processed prompts: 100%|██████████| 4/4 [00:01<00:00,  1.10s/it, est. speed input: 1739.21 toks/s, output: 463.78 toks/s]Processed prompts: 100%|██████████| 4/4 [00:01<00:00,  3.62it/s, est. speed input: 1739.21 toks/s, output: 463.78 toks/s]
+------------------------------------------------------------
+Prompt tokens: 128
+Generated tokens: 128
+Cached tokens: 0
+Output: '. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV cache blocks. Paged attention manages KV'
+------------------------------------------------------------
+Prompt tokens: 256
+Generated tokens: 128
+Cached tokens: 0
+Output: 'Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. Continuous batching schedules requests. '
+------------------------------------------------------------
+Prompt tokens: 512
+Generated tokens: 128
+Cached tokens: 0
+Output: ' The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The KV cache grows during decoding. The'
+------------------------------------------------------------
+Prompt tokens: 1024
+Generated tokens: 128
+Cached tokens: 0
+Output: 'Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. Physical blocks need not be contiguous. '
+[rank0]:[W827 23:04:53.974998698 ProcessGroupNCCL.cpp:1575] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
